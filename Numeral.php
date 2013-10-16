@@ -254,14 +254,15 @@ class Numeral
     /**
      * Get remainder of float, i.e. 2.05 -> '05'
      * @param float $value
+     * @param int $signs
      * @return string
      */
-    private function _getFloatRemainder($value)
+    private function _getFloatRemainder($value, $signs=9)
     {
         if ($value == (int)$value)
             return '0';
 
-        $signs = sizeof(self::$_FRACTIONS);
+        $signs = min($signs, sizeof(self::$_FRACTIONS));
         $value = number_format($value, $signs, '.', '');
         list(, $remainder) = explode('.', $value);
         $remainder = preg_replace('/0+$/', '', $remainder);
@@ -269,5 +270,36 @@ class Numeral
             $remainder = '0';
 
         return $remainder;
+    }
+
+    /**
+     * Get string for money (RUB)
+     * @param float $amount Amount of money
+     * @param bool $zeroForKopeck If false, then zero kopecks ignored
+     * @return string   In-words representation of money's amount
+     * @throws \InvalidArgumentException
+     */
+    public function getRubles($amount, $zeroForKopeck=false)
+    {
+        if ($amount < 0)
+            throw new \InvalidArgumentException('Amount must be positive or 0');
+
+        $words = array();
+        $amount = round($amount, 2);
+
+        $iAmount = (int)$amount;
+        if ($iAmount)
+            $words[] = $this->sumString((int)$amount, RUtils::MALE,
+                                        array('рубль', 'рубля', 'рублей'));
+
+        $remainder = $this->_getFloatRemainder($amount, 2);
+        if ($remainder || $zeroForKopeck) {
+            if ($remainder < 10 && strlen($remainder) == 1)
+                $remainder *= 10;
+            $words[] = $this->sumString($remainder, RUtils::FEMALE,
+                                        array('копейка', 'копейки', 'копеек'));
+        }
+
+        return trim(implode(' ', $words));
     }
 }

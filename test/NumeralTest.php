@@ -191,4 +191,20 @@ class NumeralTest extends \PHPUnit_Framework_TestCase
         foreach ($testData as $amount => $expected)
             $this->assertEquals($expected, $this->_object->getInWords($amount, RUtils::FEMALE));
     }
+
+    /**
+     * @covers \php_rutils\Numeral::getRubles
+     */
+    public function testGetRubles()
+    {
+        $testData = array(
+            102 => 'сто два рубля',
+            1000 => 'одна тысяча рублей',
+            '0.2' => 'двадцать копеек',
+            '2.25' => 'два рубля двадцать пять копеек',
+            '0.01' => 'одна копейка',
+        );
+        foreach ($testData as $amount => $expected)
+            $this->assertEquals($expected, $this->_object->getRubles($amount));
+    }
 }
