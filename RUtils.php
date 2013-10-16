@@ -11,4 +11,15 @@ class RUtils
     {
         return new Numeral();
     }
+
+    /**
+     * Format number with locale conventions
+     * @param float $number
+     * @return string
+     */
+    public static function formatNumber($number)
+    {
+        $params = localeconv();
+        return number_format($number, $params['decimal_point'], $params['thousands_sep']);
+    }
 }
