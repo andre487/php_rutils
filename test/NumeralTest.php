@@ -172,4 +172,23 @@ class NumeralTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals($expected, $this->_object->getInWordsFloat($amount));
 
     }
+
+    /**
+     * @covers \php_rutils\Numeral::getInWords
+     */
+    public function testInWordsGeneral()
+    {
+        $testData = array(
+            102 => 'сто две',
+            102000 => 'сто две тысячи',
+            '0.2' => 'ноль целых две десятых',
+            '10.0' => 'десять',
+            '2.25' => 'две целых двадцать пять сотых',
+            '0.01' => 'ноль целых одна сотая',
+            '0.1' => 'ноль целых одна десятая',
+            '0.000000001' => 'ноль целых одна миллиардная',
+        );
+        foreach ($testData as $amount => $expected)
+            $this->assertEquals($expected, $this->_object->getInWords($amount, RUtils::FEMALE));
+    }
 }

@@ -202,6 +202,23 @@ class Numeral
     }
 
     /**
+     * Numeral in words
+     * @param float $amount Amount of objects
+     * @param int|null $gender (MALE, FEMALE, NEUTER or null)
+     * @return string In-words representation of numeral
+     */
+    public function getInWords($amount, $gender=null)
+    {
+        if ($amount == (int)$amount) {
+            $gender = ($gender === null) ? RUtils::MALE : $gender;
+            return $this->getInWordsInt($amount, $gender);
+        }
+        else {
+            return $this->getInWordsFloat($amount);
+        }
+    }
+
+    /**
      * Integer in words
      * @param int $amount Amount of objects (0 <= amount <= PHP_INT_MAX)
      * @param int $gender (MALE, FEMALE or NEUTER)
