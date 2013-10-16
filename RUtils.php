@@ -13,13 +13,13 @@ class RUtils
     }
 
     /**
-     * Format number with locale conventions
+     * Format number with russian locale
      * @param float $number
+     * @param int $decimals
      * @return string
      */
-    public static function formatNumber($number)
+    public static function formatNumber($number, $decimals=0)
     {
-        $params = localeconv();
-        return number_format($number, $params['decimal_point'], $params['thousands_sep']);
+        return number_format($number, $decimals, ',', ' ');
     }
 }
