@@ -3,6 +3,10 @@ namespace php_rutils;
 
 class RUtils
 {
+    const MALE = 1; //sex - male
+    const FEMALE = 2; //sex - female
+    const NEUTER = 3; //sex - neuter
+
     /**
      * Plural forms and in-word representation for numerals
      * @return \php_rutils\Numeral

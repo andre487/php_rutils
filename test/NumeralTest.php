@@ -84,4 +84,64 @@ class NumeralTest extends \PHPUnit_Framework_TestCase
         $absence = 'нет гвоздей';
         $this->assertEquals($absence, $this->_object->getPlural(0, $this->_variants, $absence));
     }
+
+    /**
+     * @covers \php_rutils\Numeral::sumString
+     */
+    public function testSumStringMaleSuccess()
+    {
+        $variants = array('гвоздь', 'гвоздя', 'гвоздей');
+
+        $testData = array(
+            0 => 'ноль гвоздей',
+            1 => 'один гвоздь',
+            2 => 'два гвоздя',
+            10 => 'десять гвоздей',
+            12 => 'двенадцать гвоздей',
+            31 => 'тридцать один гвоздь',
+            104 => 'сто четыре гвоздя',
+            1000000 => 'один миллион гвоздей',
+            1102003 => 'один миллион сто две тысячи три гвоздя',
+            1100000001 => 'один миллиард сто миллионов один гвоздь',
+        );
+        foreach ($testData as $amount => $expected)
+            $this->assertEquals($expected, $this->_object->sumString($amount, RUtils::MALE, $variants));
+    }
+
+    /**
+     * @covers \php_rutils\Numeral::sumString
+     */
+    public function testSumStringFemaleSuccess()
+    {
+        $variants = array('шляпка', 'шляпки', 'шляпок');
+
+        $testData = array(
+            0 => 'ноль шляпок',
+            1 => 'одна шляпка',
+            2 => 'две шляпки',
+            10 => 'десять шляпок',
+            12 => 'двенадцать шляпок',
+            31 => 'тридцать одна шляпка',
+            104 => 'сто четыре шляпки',
+            1000000 => 'один миллион шляпок',
+            1102003 => 'один миллион сто две тысячи три шляпки',
+            1100000001 => 'один миллиард сто миллионов одна шляпка',
+        );
+        foreach ($testData as $amount => $expected)
+            $this->assertEquals($expected, $this->_object->sumString($amount, RUtils::FEMALE, $variants));
+    }
+
+    /**
+     * @covers \php_rutils\Numeral::sumString
+     */
+    public function testSumStringRangeException()
+    {
+        $variants = array('гвоздь', 'гвоздя', 'гвоздей');
+        try {
+            var_dump($this->_object->sumString(PHP_INT_MAX+1, RUtils::MALE, $variants));
+            $this->fail('No RangeException');
+        }
+        catch (\RangeException $e) {
+        }
+    }
 }
