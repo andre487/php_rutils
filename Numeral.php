@@ -108,7 +108,7 @@ class Numeral
 
     /**
      * Get sum in words
-     * @param int $amount Amount of objects (0 <= amount <= 10^11)
+     * @param int $amount Amount of objects (0 <= amount <= PHP_INT_MAX)
      * @param int $gender Gender of object (MALE, FEMALE or NEUTER)
      * @param array $variants Variants (forms) of object in such form: array('1 object', '2 objects', '5 objects')
      * @return string In-words representation objects' amount
@@ -199,5 +199,17 @@ class Numeral
 
         $result = trim(implode(' ', $words));
         return array($result, $tmpVal);
+    }
+
+    /**
+     * Integer in words
+     * @param int $amount Amount of objects (0 <= amount <= PHP_INT_MAX)
+     * @param int $gender (MALE, FEMALE or NEUTER)
+     * @return string In-words representation of numeral
+     */
+    public function getInWordsInt($amount, $gender=RUtils::MALE)
+    {
+        $amount = round($amount);
+        return $this->sumString($amount, $gender);
     }
 }

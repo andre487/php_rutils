@@ -144,4 +144,14 @@ class NumeralTest extends \PHPUnit_Framework_TestCase
         catch (\RangeException $e) {
         }
     }
+
+    /**
+     * @covers \php_rutils\Numeral::getInWordsInt
+     */
+    public function testInWordsInt()
+    {
+        $this->assertEquals('сто два', $this->_object->getInWordsInt(102));
+        $this->assertEquals('сто две тысячи', $this->_object->getInWordsInt(102000));
+        $this->assertEquals('сто две тысячи одна', $this->_object->getInWordsInt(102001, RUtils::FEMALE));
+    }
 }
