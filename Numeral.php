@@ -9,7 +9,7 @@ class Numeral
 
     /**
      * Choose proper case depending on amount
-     * @param int $amount
+     * @param int $amount Amount of objects
      * @param string[] $variants Variants (forms) of object in such form: array('1 object', '2 objects', '5 objects')
      * @return string Proper variant
      * @throws \InvalidArgumentException Variants' length lesser than 3
@@ -31,5 +31,21 @@ class Numeral
             $variant = 2;
 
         return $variants[$variant];
+    }
+
+    /**
+     * Get proper case with value
+     * @param int $amount Amount of objects
+     * @param array $variants Variants (forms) of object in such form: array('1 object', '2 objects', '5 objects')
+     * @param string|null $absence If amount is zero will return it
+     * @return string|null
+     */
+    public function getPlural($amount, array $variants, $absence=null)
+    {
+        if ($amount || $absence === null)
+            $result = RUtils::formatNumber($amount).' '.$this->choosePlural($amount, $variants);
+        else
+            $result = $absence;
+        return $result;
     }
 }

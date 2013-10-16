@@ -47,11 +47,41 @@ class NumeralTest extends \PHPUnit_Framework_TestCase
             111 => 'гвоздей',
         );
         foreach ($testData as $amount => $expected)
-            $this->_assertRightPlural($amount, $expected);
+            $this->_assertChoosePlural($amount, $expected);
     }
 
-    private function _assertRightPlural($amount, $expected)
+    private function _assertChoosePlural($amount, $expected)
     {
         $this->assertEquals($expected, $this->_object->choosePlural($amount, $this->_variants));
+    }
+
+    /**
+     * @covers \php_rutils\Numeral::getPlural
+     */
+    public function testGetPlural()
+    {
+        $testData = array(
+            -1 => '-1 гвоздь',
+            2 => '2 гвоздя',
+            11 => '11 гвоздей',
+            1104 => '1 104 гвоздя',
+            1111 => '1 111 гвоздей',
+        );
+        foreach ($testData as $amount => $expected)
+            $this->_assertGetPlural($amount, $expected);
+    }
+
+    private function _assertGetPlural($amount, $expected)
+    {
+        $this->assertEquals($expected, $this->_object->getPlural($amount, $this->_variants));
+    }
+
+    /**
+     * @covers \php_rutils\Numeral::getPlural
+     */
+    public function testGetPluralWithAbsence()
+    {
+        $absence = 'нет гвоздей';
+        $this->assertEquals($absence, $this->_object->getPlural(0, $this->_variants, $absence));
     }
 }
