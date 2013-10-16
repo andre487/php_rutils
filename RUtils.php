@@ -9,6 +9,6 @@ class RUtils
      */
     public static function numeral()
     {
-        return '\php_rutils\Numeral';
+        return new Numeral();
     }
 }
