@@ -212,4 +212,45 @@ class Numeral
         $amount = round($amount);
         return $this->sumString($amount, $gender);
     }
+
+    /**
+     * Float in words
+     * @param float $amount Amount of objects
+     * @return string In-words representation of float numeral
+     */
+    public function getInWordsFloat($amount)
+    {
+        $words = array();
+
+        $intPart = (int)$amount;
+        $pointVariants = array('целая', 'целых', 'целых');
+        $words[] = $this->sumString($intPart, RUtils::FEMALE, $pointVariants);
+
+        $remainder = $this->_getFloatRemainder($amount);
+        $signs = strlen($remainder) - 1;
+        $words[] = $this->sumString($remainder, RUtils::FEMALE, self::$_FRACTIONS[$signs]);
+
+        $result = trim(implode(' ', $words));
+        return $result;
+    }
+
+    /**
+     * Get remainder of float, i.e. 2.05 -> '05'
+     * @param float $value
+     * @return string
+     */
+    private function _getFloatRemainder($value)
+    {
+        if ($value == (int)$value)
+            return '0';
+
+        $signs = sizeof(self::$_FRACTIONS);
+        $value = number_format($value, $signs, '.', '');
+        list(, $remainder) = explode('.', $value);
+        $remainder = preg_replace('/0+$/', '', $remainder);
+        if (!$remainder)
+            $remainder = '0';
+
+        return $remainder;
+    }
 }
