@@ -17,6 +17,15 @@ class RUtils
     }
 
     /**
+     * Russian dates without locales
+     * @return \php_rutils\Dt
+     */
+    public static function dt()
+    {
+        return new Dt();
+    }
+
+    /**
      * Format number with russian locale
      * @param float $number
      * @param int $decimals
