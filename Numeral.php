@@ -1,6 +1,11 @@
 <?php
 namespace php_rutils;
 
+/**
+ * Plural forms and in-word representation for numerals
+ * Class Numeral
+ * @package php_rutils
+ */
 class Numeral
 {
     private static $_FRACTIONS = array(
