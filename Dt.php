@@ -62,13 +62,22 @@ class Dt
         else
             $params = clone $params;
 
+        if ($params->date === null) {
+            $params->date = new \DateTime();
+        }
+        elseif (is_numeric($params->date)) {
+            $timestamp = $params->date;
+            $params->date = new \DateTime();
+            $params->date->setTimestamp($timestamp);
+        }
+        elseif (is_string($params->date)) {
+            $params->date = new \DateTime($params->date);
+        }
+
         if (is_string($params->timezone))
             $params->timezone = new \DateTimeZone($params->timezone);
-
-        if ($params->date === null)
-            $params->date = new \DateTime('now', $params->timezone);
-        else if (is_string($params->date))
-            $params->date = new \DateTime($params->date, $params->timezone);
+        if ($params->timezone)
+            $params->date->setTimezone($params->timezone);
 
         //Format processing
         $weekday = $params->date->format('N') - 1;

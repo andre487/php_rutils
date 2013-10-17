@@ -67,6 +67,7 @@ class DtTest extends \PHPUnit_Framework_TestCase
 
         $params = $this->_defaultParams;
         $params['preposition'] = true;
+        $params['date'] = strtotime($this->_defaultParams['date']);
         foreach ($testData as $format => $expected) {
             $params['format'] = $format;
             $strTime = $this->_object->ruStrFTime($params);

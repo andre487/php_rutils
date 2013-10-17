@@ -14,7 +14,8 @@ class TimeParams
      * Date value, default=null translates to 'now'.
      * For string values use matched PHP rules:
      * http://www.php.net/manual/en/datetime.formats.php
-     * @var string|\DateTime
+     * Int value as Unix timestamp
+     * @var string|int|\DateTime
      */
     public $date = null;
 
