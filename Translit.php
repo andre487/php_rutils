@@ -43,8 +43,8 @@ class Translit
         array("Ш", "SH"),
         array("Ы", "Yi"),
         array("Ы", "YI"),
-        array("Ю", "Y"),
-        array("Ю", "Y"),
+        array("Ю", "Yu"),
+        array("Ю", "YU"),
         array("Я", "Ya"),
         array("Я", "YA"),
         // one-symbol replacements
@@ -82,7 +82,7 @@ class Translit
         array("ч", "ch"),
         array("ш", "sh"),
         array("ы", "yi"),
-        array("ю", "y"),
+        array("ю", "yu"),
         array("я", "ya"),
         // one-symbol replacements
         array("а", "a"),
@@ -145,8 +145,6 @@ class Translit
             self::$_RU_ALPHABET[] = $pair[0];
             self::$_EN_ALPHABET[] = $pair[1];
         }
-
-        self::$_ALPHABET = self::$_EN_ALPHABET + self::$_EN_ALPHABET;
     }
 
     /**
@@ -167,6 +165,24 @@ class Translit
     public function detranslify($inString)
     {
         return str_replace(self::$_EN_ALPHABET, self::$_RU_ALPHABET, $inString);
+    }
+
+    /**
+     * Prepare string for slug (i.e. URL or file/dir name)
+     * @param string $inString Input string
+     * @return string Slug-string
+     */
+    public function slugify($inString)
+    {
+        $inString = mb_strtolower($inString);
+
+        //convert & to "and"
+        $inString = preg_replace('/(?:&amp;)|&/u' , ' and ', $inString);
+        // replace spaces by hyphen
+        $inString = preg_replace('/[-\s\t]+/u', '-', $inString);
+
+        $translitString = $this->translify($inString);
+        return preg_replace('/[^\w-]+/', '', $translitString);
     }
 }
 

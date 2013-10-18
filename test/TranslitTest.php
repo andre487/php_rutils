@@ -30,6 +30,7 @@ class TranslitTest extends \PHPUnit_Framework_TestCase
             '«Вот так вот»' => '"Vot tak vot"',
             '‘Или вот так’' => "'Ili vot tak'",
             '– Да…' => '- Da...',
+            'Двигатель “Pratt&Whitney”' => 'Dvigatel\' "Pratt&Whitney"'
         );
         foreach ($testData as $testValue => $expected)
             $this->assertEquals($expected, $this->_object->translify($testValue));
@@ -50,5 +51,27 @@ class TranslitTest extends \PHPUnit_Framework_TestCase
         );
         foreach ($testData as $testValue => $expected)
             $this->assertEquals($expected, $this->_object->detranslify($testValue));
+    }
+
+    /**
+     * @covers \php_rutils\Translit::slugify
+     */
+    public function testSlugify()
+    {
+        $testData = array(
+            'тест' => 'test',
+            'Проверка связи' => 'proverka-svyazi',
+            'me&you' => 'me-and-you',
+            'и еще один тест' => 'i-esche-odin-test',
+            'Проверка связи…' => 'proverka-svyazi',
+            "Проверка\x0aсвязи 2" => 'proverka-svyazi-2',
+            "Проверка\201связи 3" => 'proverkasvyazi-3',
+            'World of Warcraft' => 'world-of-warcraft',
+            'Юнит-тесты — наше всё' => 'yunit-testyi---nashe-vsyo',
+            'Юнит-тесты ‒ наше всё' => 'yunit-testyi---nashe-vsyo',
+            '95−34' => '95-34',
+        );
+        foreach ($testData as $testValue => $expected)
+            $this->assertEquals($expected, $this->_object->slugify($testValue));
     }
 }
