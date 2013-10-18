@@ -26,6 +26,15 @@ class RUtils
     }
 
     /**
+     * Simple transliteration
+     * @return \php_rutils\Translit
+     */
+    public static function translit()
+    {
+        return new Translit();
+    }
+
+    /**
      * Format number with russian locale
      * @param float $number
      * @param int $decimals
