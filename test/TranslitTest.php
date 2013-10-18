@@ -34,4 +34,21 @@ class TranslitTest extends \PHPUnit_Framework_TestCase
         foreach ($testData as $testValue => $expected)
             $this->assertEquals($expected, $this->_object->translify($testValue));
     }
+
+    /**
+     * @covers \php_rutils\Translit::detranslify
+     */
+    public function testDetranslify()
+    {
+        $testData = array(
+            'test #1' => 'тест №1',
+            'proverka' => 'проверка',
+            'translit' => 'транслит',
+            'Schuka' => 'Щука',
+            'SCHuka' => 'Щука',
+            '- Da...' => '– Да…',
+        );
+        foreach ($testData as $testValue => $expected)
+            $this->assertEquals($expected, $this->_object->detranslify($testValue));
+    }
 }

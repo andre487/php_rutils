@@ -158,6 +158,16 @@ class Translit
     {
         return str_replace(self::$_RU_ALPHABET, self::$_EN_ALPHABET, $inString);
     }
+
+    /**
+     * Detranslify
+     * @param string $inString Input string
+     * @return string Detransliterated string
+     */
+    public function detranslify($inString)
+    {
+        return str_replace(self::$_EN_ALPHABET, self::$_RU_ALPHABET, $inString);
+    }
 }
 
 Translit::StaticConstructor();
