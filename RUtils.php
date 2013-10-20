@@ -35,6 +35,15 @@ class RUtils
     }
 
     /**
+     * Russian typography
+     * @return \php_rutils\Typo
+     */
+    public function typo()
+    {
+        return new Typo();
+    }
+
+    /**
      * Format number with russian locale
      * @param float $number
      * @param int $decimals
