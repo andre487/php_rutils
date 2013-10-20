@@ -16,6 +16,9 @@ class TypoTest extends \PHPUnit_Framework_TestCase
         $this->_object = RUtils::typo();
     }
 
+    /**
+     * @covers \php_rutils\Typo::rlCleanSpaces
+     */
     public function testRlCleanSpaces()
     {
         $testData = array(
@@ -30,5 +33,19 @@ class TypoTest extends \PHPUnit_Framework_TestCase
         );
         foreach ($testData as $testValue => $expected)
             $this->assertEquals($expected, $this->_object->rlCleanSpaces($testValue));
+    }
+
+    /**
+     * @covers \php_rutils\Typo::rlEllipsis
+     */
+    public function testRlCleanEllipsis()
+    {
+        $testData = array(
+            'Мдя..... могло быть лучше' => 'Мдя..... могло быть лучше',
+            '...Дааааа' => '…Дааааа',
+            '... Дааааа' => '…Дааааа'
+        );
+        foreach ($testData as $testValue => $expected)
+            $this->assertEquals($expected, $this->_object->rlEllipsis($testValue));
     }
 }

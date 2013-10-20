@@ -8,6 +8,7 @@ namespace php_rutils;
  */
 class Typo
 {
+    //CLEAN SPACES RULE
     // arguments for preg_replace: pattern and replacement
     private static $_CLEAN_SPACES_TABLE = array(
         //remove spaces before punctuation marks
@@ -23,9 +24,15 @@ class Typo
         //remove double spaces
         array('#[ ]+#um', ' '),
     );
-
     private static $_CLEAN_SPACES_PATTERN, $_CLEAN_SPACES_REPLACEMENT;
 
+    //ELLIPSIS RULE
+    private static $_ELLIPSIS_PATTERN = array('#([^\.]|^)\.\.\.([^\.]|$)#u', '#(^|"|“|«)\s*…\s*([а-яa-z])#ui');
+    private static $_ELLIPSIS_REPLACEMENT = '$1…$2';
+
+    /**
+     * "Constructor" for class variables
+     */
     public static function StaticConstructor()
     {
         self::$_CLEAN_SPACES_PATTERN = array();
@@ -46,6 +53,16 @@ class Typo
     public function rlCleanSpaces($text)
     {
         return preg_replace(self::$_CLEAN_SPACES_PATTERN, self::$_CLEAN_SPACES_REPLACEMENT, $text);
+    }
+
+    /**
+     * Replace three dots to ellipsis
+     * @param string $text
+     * @return string
+     */
+    public function rlEllipsis($text)
+    {
+        return preg_replace(self::$_ELLIPSIS_PATTERN, self::$_ELLIPSIS_REPLACEMENT, $text);
     }
 }
 
