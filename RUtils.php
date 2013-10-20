@@ -7,13 +7,20 @@ class RUtils
     const FEMALE = 2; //sex - female
     const NEUTER = 3; //sex - neuter
 
+    private static $_numeral;
+    private static $_dt;
+    private static $_translit;
+    private static $_typo;
+
     /**
      * Plural forms and in-word representation for numerals
      * @return \php_rutils\Numeral
      */
     public static function numeral()
     {
-        return new Numeral();
+        if (self::$_numeral === null)
+            self::$_numeral = new Numeral();
+        return self::$_numeral;
     }
 
     /**
@@ -22,7 +29,9 @@ class RUtils
      */
     public static function dt()
     {
-        return new Dt();
+        if (self::$_dt === null)
+            self::$_dt = new Dt();
+        return self::$_dt;
     }
 
     /**
@@ -31,16 +40,20 @@ class RUtils
      */
     public static function translit()
     {
-        return new Translit();
+        if (self::$_translit === null)
+            self::$_translit = new Translit();
+        return self::$_translit;
     }
 
     /**
      * Russian typography
      * @return \php_rutils\Typo
      */
-    public function typo()
+    public static function typo()
     {
-        return new Typo();
+        if (self::$_typo === null)
+            self::$_typo = new Typo();
+        return self::$_typo;
     }
 
     /**
