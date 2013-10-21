@@ -78,6 +78,20 @@ class Typo
     );
     private static $_MARKS_PATTERN, $_MARKS_REPLACEMENT;
 
+    //QUOTES RULE
+    private static $_QUOTES_PATTERN = array(
+        '#(^|\s)(")(\w)#u',
+        '#(\w)(")([\s,;:?!\.]|$)#u',
+        '#(^|\s)(\')(\w)#u',
+        '#(\w)(\')([\s,;:?!\.]|$)#u',
+    );
+    private static $_QUOTES_REPLACEMENT = array(
+        '$1«$3',
+        '$1»$3',
+        "$1\xE2\x80\x9C$3",
+        "$1\xE2\x80\x9D$3",
+    );
+
     /**
      * "Constructor" for class variables
      */
@@ -159,6 +173,16 @@ class Typo
     public function rlMarks($text)
     {
         return preg_replace(self::$_MARKS_PATTERN, self::$_MARKS_REPLACEMENT, $text);
+    }
+
+    /**
+     * Replace quotes by typographic quotes
+     * @param string $text
+     * @return string
+     */
+    public static function rlQuotes($text)
+    {
+        return preg_replace(self::$_QUOTES_PATTERN, self::$_QUOTES_REPLACEMENT, $text);
     }
 }
 

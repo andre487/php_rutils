@@ -125,4 +125,22 @@ class TypoTest extends \PHPUnit_Framework_TestCase
         foreach ($testData as $testValue => $expected)
             $this->assertEquals($expected, $this->_object->rlMarks($testValue));
     }
+
+    /**
+     * @covers \php_rutils\Typo::rlQuotes
+     */
+    public function testRlQuotes()
+    {
+        $testData = array(
+            'ООО "МСК "Аско-Забота"' => 'ООО «МСК «Аско-Забота»',
+            "\"МСК\xC2\xA0\"Аско-Забота\"" => "«МСК\xC2\xA0«Аско-Забота»",
+            "Двигатели 'Pratt&Whitney'" => "Двигатели “Pratt&Whitney”",
+            "\"Вложенные \"кавычки\" - бич всех типографик\", не правда ли"
+                => "«Вложенные «кавычки» - бич всех типографик», не правда ли",
+            "'Pratt&Whitney' никогда не использовались на самолетах \"Аэрофлота\""
+                => "“Pratt&Whitney” никогда не использовались на самолетах «Аэрофлота»"
+        );
+        foreach ($testData as $testValue => $expected)
+            $this->assertEquals($expected, $this->_object->rlQuotes($testValue));
+    }
 }
