@@ -44,8 +44,8 @@ class Typo
         '#([+-]?\d)\s*--?\s*([+-]?\d)#u'
     );
     private static $_DASHES_REPLACEMENT = array(
-        "$1—\xE2\x80\xAf$2",
-        "$1\xE2\x80\xAf— $2",
+        "$1—\xE2\x80\x89$2",
+        "$1\xE2\x80\x89— $2",
         '$1—$2',
         '$1…$2',
     );
@@ -61,20 +61,20 @@ class Typo
         '#(\s+)([—-]+)(\s+)#u',
     );
     private static $_GLUE_REPLACEMENT = array(
-        "$1\xE2\x80\xAF$2$3",
+        "$1\xC2\xA0$2$3",
         "$1\xC2\xA0$2",
         "$1\xC2\xA0$2",
-        "\xE2\x80\xAF$2$3",
+        "\xE2\x80\x89$2$3",
     );
 
     //MARKS RULE
     private static $_MARKS_TABLE = array(
-        array('#((?:-|\+)?\d+)\s*([fc]\W)#ui', "$1\xE2\x80\xAF°$2"),
+        array('#((?:-|\+)?\d+)\s*([fc]\W)#ui', "$1\xE2\x80\x89°$2"),
         array('#\(c\)#ui', '©'),
         array('#\(r\)#ui', '®'),
         array('#\(p\)#ui', '§'),
         array('#\(tm\)#ui', '™'),
-        array('#(©)\s*(\d+)#u', "$1\xE2\x80\xAF$2"),
+        array('#(©)\s*(\d+)#u', "$1\xE2\x80\x89$2"),
         array('#([^+])((?:\+-)|(?:-\+))#u', '$1±'),
         array('#(\w)\s+(®|™)#u', '$1$2'),
         array('#\s(no|№)\s*(\d+)#ui', "\xC2\xA0№\xE2\x80\x89$2"),
@@ -88,12 +88,7 @@ class Typo
         '#(^|\s)(\')(\w)#u',
         '#(\w)(\')([\s,;:?!\.]|$)#u',
     );
-    private static $_QUOTES_REPLACEMENT = array(
-        '$1«$3',
-        '$1»$3',
-        "$1\xE2\x80\x9C$3",
-        "$1\xE2\x80\x9D$3",
-    );
+    private static $_QUOTES_REPLACEMENT = array('$1«$3', '$1»$3', "$1“$3", "$1”$3");
 
     /**
      * "Constructor" for class variables
@@ -145,7 +140,11 @@ class Typo
      */
     public function rlInitials($text)
     {
-        return preg_replace('#([А-Я])\.\s*([А-Я])\.\s*([А-Я][а-я]+)#u', "$1.\xC2\xA0$2.\xC2\xA0$3", $text);
+        return preg_replace(
+            '#([А-Я])\.\s*([А-Я])\.\s*([А-Я][а-я]+)#u',
+            "$1.\xE2\x80\x89$2.\xE2\x80\x89$3",
+            $text
+        );
     }
 
     /**
