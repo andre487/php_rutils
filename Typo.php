@@ -14,7 +14,7 @@ class Typo
         //remove spaces before punctuation marks
         array('#\s+([\.,?!:;\)]+)#u', '$1'),
         //add spaces after punctuation marks
-        array('#([\.,?!:;\)]+)([^\.!,?\)]+)#u', '$1 $2'),
+        array('#([^\.][\.,?!:;\)]+)([^\.!,?\)]+)#u', '$1 $2'),
         //remove spaces after opening bracket
         array('#(\S+)\s*(\()\s+(\S+)#u', '$1 ($3'),
         //remove heading spaces
@@ -55,8 +55,8 @@ class Typo
         //particles
         '#(\S)\s+(же|ли|ль|бы|б|ж|ка)([\s\.,!\?:;…]*)#u',
         //short words
-        '#([[:^alpha:]][[:alpha:]]{1,3})\s+([[:alpha:]])#u',
-        '#^([[:alpha:]]{1,3})\s+([[:alpha:]])#u',
+        '#([[:^alpha:]][[:alpha:]]{1,3})\s+(\S)#u',
+        '#^([[:alpha:]]{1,3})\s+(\S)#u',
         //dashes
         '#(\s+)([—-]+)(\s+)#u',
     );
@@ -185,6 +185,27 @@ class Typo
     public static function rlQuotes($text)
     {
         return preg_replace(self::$_QUOTES_PATTERN, self::$_QUOTES_REPLACEMENT, $text);
+    }
+
+    /**
+     * Typography applier
+     * @param string $text Text for handle
+     * @param array $rules Rules array. Look TypoRules class. By default using TypoRules::$STANDARD_RULES
+     * @return string
+     * @throws \InvalidArgumentException
+     */
+    public function typography($text, array $rules=null)
+    {
+        if ($rules === null)
+            $rules = TypoRules::$STANDARD_RULES;
+        if (array_diff($rules, TypoRules::$EXTENDED_RULES))
+            throw new \InvalidArgumentException('Invalid typo rules');
+
+        foreach ($rules as $rule) {
+            $funcName = 'rl'.$rule;
+            $text = call_user_func(array($this, $funcName), $text);
+        }
+        return $text;
     }
 }
 

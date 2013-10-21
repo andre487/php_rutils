@@ -2,6 +2,7 @@
 namespace php_rutils\test;
 
 use php_rutils\RUtils;
+use php_rutils\TypoRules;
 
 class TypoTest extends \PHPUnit_Framework_TestCase
 {
@@ -143,4 +144,44 @@ class TypoTest extends \PHPUnit_Framework_TestCase
         foreach ($testData as $testValue => $expected)
             $this->assertEquals($expected, $this->_object->rlQuotes($testValue));
     }
+
+    /**
+     * @covers \php_rutils\Typo::typography
+     */
+    public function testTypographyStandard()
+    {
+        $text = <<<TEXT
+...Когда В. И. Пупкин увидел в газете ( это была "Сермяжная правда" № 45) рубрику Weather Forecast (r),
+он не поверил своим глазам - температуру обещали +-451F.
+TEXT;
+        $text = preg_replace('#\r?\n#', "\n", $text);
+
+        $expected = <<<TEXT
+...Когда В. И. Пупкин увидел в газете (это была «Сермяжная правда»\xC2\xA0№\xE2\x80\x8945) рубрику Weather Forecast®,
+он не поверил своим глазам\xE2\x80\x89— температуру обещали ±451 °F.
+TEXT;
+        $expected = preg_replace('#\r?\n#', "\n", $expected);
+
+        $this->assertEquals($expected, $this->_object->typography($text));
+    }
+
+    /**
+     * @covers \php_rutils\Typo::typography
+     */
+    public function testTypographyExtended()
+    {
+        $text = <<<TEXT
+...Когда В. И. Пупкин увидел в газете ( это была "Сермяжная правда" № 45) рубрику Weather Forecast (r),
+он не поверил своим глазам - температуру обещали +-451F.
+TEXT;
+            $text = preg_replace('#\r?\n#', "\n", $text);
+
+            $expected = <<<TEXT
+…Когда В.\xE2\x80\x89И.\xE2\x80\x89Пупкин увидел в\xC2\xA0газете (это\xC2\xA0была «Сермяжная правда»\xC2\xA0№\xE2\x80\x8945) рубрику Weather Forecast®,
+он\xC2\xA0не поверил своим глазам\xE2\x80\x89— температуру обещали ±451 °F.
+TEXT;
+            $expected = preg_replace('#\r?\n#', "\n", $expected);
+
+            $this->assertEquals($expected, $this->_object->typography($text, TypoRules::$EXTENDED_RULES));
+        }
 }
