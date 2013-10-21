@@ -12,9 +12,9 @@ class Typo
     // arguments for preg_replace: pattern and replacement
     private static $_CLEAN_SPACES_TABLE = array(
         //remove spaces before punctuation marks
-        array('#\s+([\.,?!\)]+)#u', '$1'),
+        array('#\s+([\.,?!:;\)]+)#u', '$1'),
         //add spaces after punctuation marks
-        array('#([\.,?!\)]+)([^\.!,?\)]+)#u', '$1 $2'),
+        array('#([\.,?!:;\)]+)([^\.!,?\)]+)#u', '$1 $2'),
         //remove spaces after opening bracket
         array('#(\S+)\s*(\()\s+(\S+)#u', '$1 ($3'),
         //remove heading spaces
@@ -27,7 +27,10 @@ class Typo
     private static $_CLEAN_SPACES_PATTERN, $_CLEAN_SPACES_REPLACEMENT;
 
     //ELLIPSIS RULE
-    private static $_ELLIPSIS_PATTERN = array('#([^\.]|^)\.\.\.([^\.]|$)#u', '#(^|"|“|«)\s*…\s*([а-яa-z])#ui');
+    private static $_ELLIPSIS_PATTERN = array(
+        '#([^\.]|^)\.\.\.([^\.]|$)#u',
+        '#(^|"|“|«)\s*…\s*([[:alpha:]])#ui'
+    );
     private static $_ELLIPSIS_REPLACEMENT = '$1…$2';
 
     //DASHES RULE
@@ -115,8 +118,8 @@ class Typo
     }
 
     /**
-     *  Clean double spaces, trailing spaces, heading spaces,
-     *  spaces before punctuations
+     * Clean double spaces, trailing spaces, heading spaces,
+     * spaces before punctuations
      * @param string $text
      * @return string
      */
