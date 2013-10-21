@@ -47,6 +47,23 @@ class Typo
         '$1…$2',
     );
 
+    //WORD GLUE RULE
+    private static $_GLUE_PATTERN = array(
+        //particles
+        '#(\S)\s+(же|ли|ль|бы|б|ж|ка)([\s\.,!\?:;…]*)#u',
+        //short words
+        '#([[:^alpha:]][[:alpha:]]{1,3})\s+([[:alpha:]])#u',
+        '#^([[:alpha:]]{1,3})\s+([[:alpha:]])#u',
+        //dashes
+        '#(\s+)([—-]+)(\s+)#u',
+    );
+    private static $_GLUE_REPLACEMENT = array(
+        "$1\xE2\x80\xAF$2$3",
+        "$1\xC2\xA0$2",
+        "$1\xC2\xA0$2",
+        "\xE2\x80\xAF$2$3",
+    );
+
     /**
      * "Constructor" for class variables
      */
@@ -100,6 +117,16 @@ class Typo
     public function rlDashes($text)
     {
         return preg_replace(self::$_DASHES_PATTERN, self::$_DASHES_REPLACEMENT, $text);
+    }
+
+    /**
+     * Glue (set nonbreakable space) short words with word before/after
+     * @param string $text
+     * @return string
+     */
+    public function rlWordGlue($text)
+    {
+        return preg_replace(self::$_GLUE_PATTERN, self::$_GLUE_REPLACEMENT, $text);
     }
 }
 

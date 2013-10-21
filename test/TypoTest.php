@@ -89,4 +89,20 @@ class TypoTest extends \PHPUnit_Framework_TestCase
         foreach ($testData as $testValue => $expected)
             $this->assertEquals($expected, $this->_object->rlDashes($testValue));
     }
+
+    /**
+     * @covers \php_rutils\Typo::rlWordGlue
+     */
+    public function testRlWordGlue()
+    {
+        $testData = array(
+            'Вроде бы оператор согласен' => "Вроде\xE2\x80\xAFбы\xC2\xA0оператор согласен",
+            'Он не поверил глазам' => "Он\xC2\xA0не\xC2\xA0поверил глазам",
+            'Муха — это маленькая птичка' => "Муха\xE2\x80\xAf— это\xC2\xA0маленькая птичка",
+            'увидел в газете (это была "Сермяжная правда" № 45) рубрику Weather Forecast'
+                => "увидел в\xC2\xA0газете (это\xC2\xA0была \"Сермяжная правда\" № 45) рубрику Weather Forecast"
+        );
+        foreach ($testData as $testValue => $expected)
+            $this->assertEquals($expected, $this->_object->rlWordGlue($testValue));
+    }
 }
