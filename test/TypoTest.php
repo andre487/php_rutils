@@ -105,4 +105,24 @@ class TypoTest extends \PHPUnit_Framework_TestCase
         foreach ($testData as $testValue => $expected)
             $this->assertEquals($expected, $this->_object->rlWordGlue($testValue));
     }
+
+    /**
+     * @covers \php_rutils\Typo::rlMarks
+     */
+    public function testRlMarks()
+    {
+        $testData = array(
+            'Когда В. И. Пупкин увидел в газете рубрику Weather Forecast (r), он не поверил своим глазам - температуру обещали +-451F.'
+                => "Когда В. И. Пупкин увидел в газете рубрику Weather Forecast®, он не поверил своим глазам - температуру обещали ±451\xE2\x80\xAf°F.",
+            '14 Foo' => '14 Foo',
+            'Coca-cola(tm)' => 'Coca-cola™',
+            "(c)  2008\xE2\x80\xAfЮрий Юревич" => "©\xE2\x80\xAf2008\xE2\x80\xAfЮрий Юревич",
+            "Microsoft (R) Windows (tm)" => "Microsoft® Windows™",
+            "Школа-гимназия No 3" => "Школа-гимназия\xC2\xA0№\xE2\x80\x893",
+            'Школа-гимназия No3' => "Школа-гимназия\xC2\xA0№\xE2\x80\x893",
+            'Школа-гимназия №3' => "Школа-гимназия\xC2\xA0№\xE2\x80\x893",
+        );
+        foreach ($testData as $testValue => $expected)
+            $this->assertEquals($expected, $this->_object->rlMarks($testValue));
+    }
 }

@@ -64,6 +64,20 @@ class Typo
         "\xE2\x80\xAF$2$3",
     );
 
+    //MARKS RULE
+    private static $_MARKS_TABLE = array(
+        array('#((?:-|\+)?\d+)\s*([fc]\W)#ui', "$1\xE2\x80\xAF°$2"),
+        array('#\(c\)#ui', '©'),
+        array('#\(r\)#ui', '®'),
+        array('#\(p\)#ui', '§'),
+        array('#\(tm\)#ui', '™'),
+        array('#(©)\s*(\d+)#u', "$1\xE2\x80\xAF$2"),
+        array('#([^+])((?:\+-)|(?:-\+))#u', '$1±'),
+        array('#(\w)\s+(®|™)#u', '$1$2'),
+        array('#\s(no|№)\s*(\d+)#ui', "\xC2\xA0№\xE2\x80\x89$2"),
+    );
+    private static $_MARKS_PATTERN, $_MARKS_REPLACEMENT;
+
     /**
      * "Constructor" for class variables
      */
@@ -75,6 +89,14 @@ class Typo
         foreach (self::$_CLEAN_SPACES_TABLE as $pair) {
             self::$_CLEAN_SPACES_PATTERN[] = $pair[0];
             self::$_CLEAN_SPACES_REPLACEMENT[] = $pair[1];
+        }
+
+        self::$_MARKS_PATTERN = array();
+        self::$_MARKS_REPLACEMENT = array();
+
+        foreach (self::$_MARKS_TABLE as $pair) {
+            self::$_MARKS_PATTERN[] = $pair[0];
+            self::$_MARKS_REPLACEMENT[] = $pair[1];
         }
     }
 
@@ -127,6 +149,16 @@ class Typo
     public function rlWordGlue($text)
     {
         return preg_replace(self::$_GLUE_PATTERN, self::$_GLUE_REPLACEMENT, $text);
+    }
+
+    /**
+     * Replace +-, (c), (tm), (r), (p), etc by its typographic equivalents
+     * @param string $text
+     * @return string
+     */
+    public function rlMarks($text)
+    {
+        return preg_replace(self::$_MARKS_PATTERN, self::$_MARKS_REPLACEMENT, $text);
     }
 }
 
