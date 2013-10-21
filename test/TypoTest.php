@@ -48,4 +48,23 @@ class TypoTest extends \PHPUnit_Framework_TestCase
         foreach ($testData as $testValue => $expected)
             $this->assertEquals($expected, $this->_object->rlEllipsis($testValue));
     }
+
+    /**
+     * @covers \php_rutils\Typo::rlInitials
+     */
+    public function testRlInitials()
+    {
+        $testData = array(
+            'Председатель В.И.Иванов выступил на собрании'
+                => "Председатель В.\xC2\xA0И.\xC2\xA0Иванов выступил на собрании",
+            'Председатель В.И. Иванов выступил на собрании'
+                => "Председатель В.\xC2\xA0И.\xC2\xA0Иванов выступил на собрании",
+            "1. В.И.Иванов\r\n2. С.П.Васечкин"
+                => "1. В.\xC2\xA0И.\xC2\xA0Иванов\r\n2. С.\xC2\xA0П.\xC2\xA0Васечкин",
+            "Председатель В.\r\nИ.\r\nИванов выступил на собрании"
+                => "Председатель В.\xC2\xA0И.\xC2\xA0Иванов выступил на собрании",
+        );
+        foreach ($testData as $testValue => $expected)
+            $this->assertEquals($expected, $this->_object->rlInitials($testValue));
+    }
 }

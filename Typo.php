@@ -64,6 +64,16 @@ class Typo
     {
         return preg_replace(self::$_ELLIPSIS_PATTERN, self::$_ELLIPSIS_REPLACEMENT, $text);
     }
+
+    /**
+     * Replace space between initials and surname by thin space
+     * @param string $text
+     * @return string
+     */
+    public function rlInitials($text)
+    {
+        return preg_replace('#([А-Я])\.\s*([А-Я])\.\s*([А-Я][а-я]+)#u', "$1.\xC2\xA0$2.\xC2\xA0$3", $text);
+    }
 }
 
 Typo::StaticConstructor();
