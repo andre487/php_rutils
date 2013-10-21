@@ -30,6 +30,23 @@ class Typo
     private static $_ELLIPSIS_PATTERN = array('#([^\.]|^)\.\.\.([^\.]|$)#u', '#(^|"|“|«)\s*…\s*([а-яa-z])#ui');
     private static $_ELLIPSIS_REPLACEMENT = '$1…$2';
 
+    //DASHES RULE
+    private static $_DASHES_PATTERN = array(
+        //dash in the beginning of the sentence
+        '#(^|(?:[\.\?!…]\s*))--?\s*(.|$)#u',
+        //dash between words
+        '#([[:alpha:]])(?:\s+--?\s+)|(?:--)(.|$)#u',
+        //dash in range of numbers
+        '#(\d)\s*--?\s*(\d)#u',
+        '#([+-]?\d)\s*--?\s*([+-]?\d)#u'
+    );
+    private static $_DASHES_REPLACEMENT = array(
+        "$1—\xE2\x80\xAf$2",
+        "$1\xE2\x80\xAf— $2",
+        '$1—$2',
+        '$1…$2',
+    );
+
     /**
      * "Constructor" for class variables
      */
@@ -73,6 +90,16 @@ class Typo
     public function rlInitials($text)
     {
         return preg_replace('#([А-Я])\.\s*([А-Я])\.\s*([А-Я][а-я]+)#u', "$1.\xC2\xA0$2.\xC2\xA0$3", $text);
+    }
+
+    /**
+     * Replace dash to long/medium dashes
+     * @param string $text
+     * @return string
+     */
+    public function rlDashes($text)
+    {
+        return preg_replace(self::$_DASHES_PATTERN, self::$_DASHES_REPLACEMENT, $text);
     }
 }
 

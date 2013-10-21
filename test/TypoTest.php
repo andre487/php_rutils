@@ -67,4 +67,26 @@ class TypoTest extends \PHPUnit_Framework_TestCase
         foreach ($testData as $testValue => $expected)
             $this->assertEquals($expected, $this->_object->rlInitials($testValue));
     }
+
+    /**
+     * @covers \php_rutils\Typo::rlDashes
+     */
+    public function testRlDashes()
+    {
+        $testData = array(
+            "- Я пошел домой...\n- Может останешься? - Нет, ухожу."
+                => "—\xE2\x80\xAfЯ пошел домой...\n—\xE2\x80\xAfМожет останешься? —\xE2\x80\xAfНет, ухожу.",
+            '-- Я пошел домой... -- Может останешься? -- Нет, ухожу.'
+                => "—\xE2\x80\xAfЯ пошел домой... —\xE2\x80\xAfМожет останешься? —\xE2\x80\xAfНет, ухожу.",
+            "-- Я\xC2\xA0пошел домой…\xC2\xA0-- Может останешься?\xC2\xA0-- Нет,\xC2\xA0ухожу."
+                => "—\xE2\x80\xAfЯ\xC2\xA0пошел домой…\xC2\xA0—\xE2\x80\xAfМожет останешься?\xC2\xA0—\xE2\x80\xAfНет,\xC2\xA0ухожу.",
+            'Муха - это маленькая птичка' => "Муха\xE2\x80\xAf— это маленькая птичка",
+            'Муха--это маленькая птичка' => "Муха\xE2\x80\xAf— это маленькая птичка",
+            'Ползать по-пластунски' => 'Ползать по-пластунски',
+            'Диапазон: 9 -  15' => 'Диапазон: 9—15',
+            'Температура: -1 - +2' => 'Температура: -1…+2'
+        );
+        foreach ($testData as $testValue => $expected)
+            $this->assertEquals($expected, $this->_object->rlDashes($testValue));
+    }
 }
