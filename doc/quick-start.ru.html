@@ -138,5 +138,38 @@ echo RUtils::translit()->detranslify("SCHuka");
 echo RUtils::translit()->slugify('Муха — это маленькая птичка');
 //Result: muha---eto-malenkaya-ptichka
 </pre>
+
+        <h2>Возможности Typo</h2>
+<pre>
+$text = &lt;&lt;&lt;TEXT
+...Когда В. И. Пупкин увидел в газете ( это была "Сермяжная правда" № 45) рубрику Weather Forecast (r),
+он не поверил своим глазам - температуру обещали +-451F.
+TEXT;
+
+//Стандартные правила
+echo RUtils::typo()->typography($text), PHP_EOL;
+/**
+ * Result:
+ * ...Когда В. И. Пупкин увидел в газете (это была «Сермяжная правда» №45) рубрику Weather Forecast®,
+ * он не поверил своим глазам — температуру обещали ±451°F.
+ */
+
+
+//Правила из набора "extended"
+echo RUtils::typo()->typography($text, TypoRules::$EXTENDED_RULES), PHP_EOL;
+/**
+ * Result:
+ * …Когда В. И. Пупкин увидел в газете (это была «Сермяжная правда» №45) рубрику Weather Forecast®,
+ * он не поверил своим глазам — температуру обещали ±451 °F.
+ */
+
+//Пользовательские правила
+echo RUtils::typo()->typography($text, array(TypoRules::DASHES, TypoRules::CLEAN_SPACES)), PHP_EOL;
+/**
+ * Result:
+ * ...Когда В. И. Пупкин увидел в газете (это была "Сермяжная правда" № 45) рубрику Weather Forecast (r),
+ * он не поверил своим глазам — температуру обещали +-451F.
+ */
+</pre>
     </body>
 </html>
