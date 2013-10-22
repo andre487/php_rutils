@@ -58,5 +58,70 @@ echo $numeral->getInWords(100.0);
 echo RUtils::numeral()->getRubles(100.25);
 //Result: сто рублей двадцать пять копеек
 </pre>
+
+        <h2>Возможности Dt</h2>
+
+        <h3>Сегодняшняя дата</h3>
+        <p>
+            Параметры передаются в качестве инстанса класса
+            <code>\php_rutils\struct\TimeParams</code>,
+            так же возможно передавать их в виде массива
+        </p>
+<pre>
+$params = new TimeParams();
+$params->date = null; //это значение по умолчанию
+$params->format = 'сегодня d F Y года';
+$params->monthInflected = true;
+echo RUtils::dt()->ruStrFTime($params);
+//Result: сегодня 22 октября 2013 года
+</pre>
+
+
+        <h3>Историческая дата</h3>
+        <p>
+            Параметры передаются в качестве массива,
+            поля такие же как в классе <code>TimeParams</code>.
+        </p>
+        <p>
+            Дата передается как строка в свободном формате. Так же возможно передавать дату
+            как Unix timestamp или как инстанс класса <code>\DateTime</code>.
+        </p>
+<pre>
+$params = array(
+    'date' => '09-05-1945',
+    'format' => 'l d F Y была одержана победа над немецко-фашистскими захватчиками',
+    'monthInflected' => true,
+    'preposition' => true,
+);
+echo RUtils::dt()->ruStrFTime($params);
+//Result: в среду 9 мая 1945 была одержана победа над немецко-фашистскими захватчиками
+</pre>
+
+
+        <h3>Временной период до фиксированной даты в прошлом</h3>
+        <p>Форматы времени для данной функции аналогичны форматам для <code>ruStrFTime</code>.</p>
+        <p>Параметр <code>$accuracy</code> отвечает за подробность информации.</p>
+
+<pre>
+$toTime = new \DateTime('05-06-1945');
+echo RUtils::dt()->distanceOfTimeInWords($toTime);
+//Result: 24 976 дней назад
+
+$toTime = strtotime('05-06-1945');
+$fromTime = null; //now
+$accuracy = 3; //дни, часы, минуты
+echo RUtils::dt()->distanceOfTimeInWords($toTime, $fromTime, $accuracy);
+//Result: 24 976 дней, 11 часов, 21 минуту назад
+</pre>
+
+
+        <h3>Временной период между фиксированными датами</h3>
+<pre>
+$fromTime = '1988-01-01 11:40';
+$toTime = '2088-01-01 12:35';
+$accuracy = 3; //дни, часы, минуты
+echo RUtils::dt()->distanceOfTimeInWords($toTime, $fromTime, $accuracy);
+//Result: через 36 525 дней, 0 часов, 55 минут
+</pre>
     </body>
 </html>
