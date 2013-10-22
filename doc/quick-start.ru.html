@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <meta charset="UTF-8" />
+        <link rel="stylesheet" href="styles.css" />
+    </head>
+    <body>
+        <h1>Quick start</h1>
+        <p>
+            <b>PHP RUtils</b>&nbsp;&mdash; порт <a href="https://github.com/j2a/pytils">Pytils</a> на PHP.
+            Утилиты разделены на следующие модули (классы):
+        </p>
+        <ul>
+            <li>Numeral - работа с числами,</li>
+            <li>Dt - работа с датами,</li>
+            <li>Translit - транслитерация,</li>
+            <li>Typo - небольшой набор правил типографики простого текста.</li>
+        </ul>
+
+        <h2>Возможности Numeral</h2>
+
+        <h3>Выбор формы множественного числа</h3>
+<pre>
+$variants = array(
+    'гвоздь', //1
+    'гвоздя', //2
+    'гвоздей' //5
+);
+echo $amount, ' ', RUtils::numeral()->choosePlural(15, $variants);
+//Result: 15 гвоздей
+
+echo RUtils::numeral()->getPlural(2, $variants);
+//Result: 2 гвоздя
+</pre>
+
+        <h3>Выбор формы и вывод прописью</h3>
+<pre>
+echo RUtils::numeral()->sumString(1234, RUtils::MALE, $variants);
+//Result: одна тысяча двести тридцать четыре гвоздя
+</pre>
+
+        <h3>Вывод числа прописью</h3>
+<pre>
+$numeral = RUtils::numeral();
+echo $numeral->getInWordsInt(100);
+//Result: сто
+
+echo $numeral->getInWordsFloat(100.025);
+//Result: сто целых двадцать пять тысячных
+
+echo $numeral->getInWords(100.0);
+//Result: сто
+</pre>
+
+        <h3>Вывод суммы денег в рублях</h3>
+<pre>
+echo RUtils::numeral()->getRubles(100.25);
+//Result: сто рублей двадцать пять копеек
+</pre>
+    </body>
+</html>

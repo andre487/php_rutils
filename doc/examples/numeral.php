@@ -8,7 +8,7 @@ require '_begin.php';
 //Word forms
 $variants = array(
     'гвоздь', //1
-    'гвозря', //2
+    'гвоздя', //2
     'гвоздей' //5
 );
 
