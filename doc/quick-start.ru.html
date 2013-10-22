@@ -123,5 +123,20 @@ $accuracy = 3; //дни, часы, минуты
 echo RUtils::dt()->distanceOfTimeInWords($toTime, $fromTime, $accuracy);
 //Result: через 36 525 дней, 0 часов, 55 минут
 </pre>
+
+        <h2>Возможности Translit</h2>
+<pre>
+//Транслитерация
+echo RUtils::translit()->translify('Муха — это маленькая птичка');
+//Result: Muha - eto malen'kaya ptichka
+
+//Обратное преобразование
+echo RUtils::translit()->detranslify("SCHuka");
+//Result: Щука
+
+//Подготовка для использования в URL'ях или путях
+echo RUtils::translit()->slugify('Муха — это маленькая птичка');
+//Result: muha---eto-malenkaya-ptichka
+</pre>
     </body>
 </html>
