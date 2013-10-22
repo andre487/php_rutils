@@ -2,14 +2,18 @@ PHP RUtils
 ----------
 
 RUtils is the PHP port of the Python Pytils (https://github.com/j2a/pytils).
-This is a Russian-specific string utils (transliteration, numeral is words, russian dates, etc)
+This is a Russian-specific string utils (transliteration, numeral is words, russian dates, typography).
 
-See additional docs in doc subdir.
+See additional docs and examples in doc subdir.
 
 ----------
 
-RUtils - порт утилит Pytils (https://github.com/j2a/pytils) с языка Python на язык PHP.
+RUtils - порт утилит Pytils (https://github.com/j2a/pytils) на язык PHP.
+Pytils - утилиты для работы с русским текстом (транслитерация, числительные словами,
+русские даты, простая типографика).
 
-Pytils - это инструменты для работы с русскими строками (транслитерация, числительные слоами, русские даты и т.д.)
+Документацию и примеры смотрите в каталоге doc.
 
-Документацию смотрите в каталоге doc
+----------
+
+Буду рад принять помощь по проекту в виде баг-репортов и pull-реквестов.
