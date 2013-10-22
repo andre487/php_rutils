@@ -111,23 +111,23 @@ class Dt
 
     /**
      * Represents distance of time in words
-     * @param string|int|\DateTime $fromTime Source time
-     * @param string|int|\DateTime $toTime Target time
+     * @param string|int|\DateTime $toTime Source time
+     * @param string|int|\DateTime $fromTime Target time
      * @param int $accuracy Level of accuracy (1..3), default=1
      * @param string|\DateTimeZone|null $timeZone Time zone
      * @throws \InvalidArgumentException
      * @return string Distance of time in words
      */
-    public function distanceOfTimeInWords($fromTime, $toTime = null, $accuracy = 1, $timeZone = null)
+    public function distanceOfTimeInWords($toTime, $fromTime = null, $accuracy = 1, $timeZone = null)
     {
         if ($accuracy < 1 || $accuracy > 3)
             throw new \InvalidArgumentException('Wrong accuracy value (must be 1..3)');
 
-        /* @var $fromTime \DateTime */
         /* @var $toTime \DateTime */
+        /* @var $fromTime \DateTime */
         /* @var $toCurrent bool */
-        list($fromTime, $toTime, $toCurrent) = $this->_createFunctionParams($fromTime, $toTime, $timeZone);
-        $interval = $fromTime->diff($toTime);
+        list($toTime, $fromTime, $toCurrent) = $this->_createFunctionParams($toTime, $fromTime, $timeZone);
+        $interval = $toTime->diff($fromTime);
 
         $words = array();
         $values = array();
@@ -177,23 +177,9 @@ class Dt
         return $resultStr;
     }
 
-    private function _createFunctionParams($fromTime, $toTime, $timeZone)
+    private function _createFunctionParams($toTime, $fromTime, $timeZone)
     {
-        if (is_numeric($fromTime)) {
-            $timestamp = $fromTime;
-            $fromTime = new \DateTime();
-            $fromTime->setTimestamp($timestamp);
-        }
-        else if (is_string($fromTime)) {
-            $fromTime = new \DateTime($fromTime);
-        }
-
-        $toCurrent = false;
-        if ($toTime === null) {
-            $toTime = new \DateTime();
-            $toCurrent = true;
-        }
-        else if (is_numeric($toTime)) {
+        if (is_numeric($toTime)) {
             $timestamp = $toTime;
             $toTime = new \DateTime();
             $toTime->setTimestamp($timestamp);
@@ -202,15 +188,29 @@ class Dt
             $toTime = new \DateTime($toTime);
         }
 
+        $toCurrent = false;
+        if ($fromTime === null) {
+            $fromTime = new \DateTime();
+            $toCurrent = true;
+        }
+        else if (is_numeric($fromTime)) {
+            $timestamp = $fromTime;
+            $fromTime = new \DateTime();
+            $fromTime->setTimestamp($timestamp);
+        }
+        else if (is_string($fromTime)) {
+            $fromTime = new \DateTime($fromTime);
+        }
+
         if (is_string($timeZone))
             $timeZone = new \DateTimeZone($timeZone);
 
         if ($timeZone) {
-            $fromTime->setTimezone($timeZone);
             $toTime->setTimezone($timeZone);
+            $fromTime->setTimezone($timeZone);
         }
 
-        return array($fromTime, $toTime, $toCurrent);
+        return array($toTime, $fromTime, $toCurrent);
     }
 
     private function _fillCollections($interval, $toCurrent, &$words, &$values, &$alternatives)

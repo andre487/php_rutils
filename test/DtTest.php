@@ -138,12 +138,12 @@ class DtTest extends \PHPUnit_Framework_TestCase
             ($nowTime + 365*24*60*60) => 'через 365 дней',
         );
 
-        foreach ($testData as $fromTime => $expected)
-            $this->assertEquals($expected, $this->_object->distanceOfTimeInWords($fromTime));
+        foreach ($testData as $toTime => $expected)
+            $this->assertEquals($expected, $this->_object->distanceOfTimeInWords($toTime));
 
-        $fromTime = new \DateTime();
-        $fromTime->setTimestamp($nowTime + 365*24*60*60);
-        $this->assertEquals('через 365 дней', $this->_object->distanceOfTimeInWords($fromTime));
+        $toTime = new \DateTime();
+        $toTime->setTimestamp($nowTime + 365*24*60*60);
+        $this->assertEquals('через 365 дней', $this->_object->distanceOfTimeInWords($toTime));
     }
 
     /**
@@ -152,17 +152,17 @@ class DtTest extends \PHPUnit_Framework_TestCase
     public function testDistanceOfTimeToTime()
     {
         $nowTimeStamp = strtotime('now');
-        $fromTimeStamp = $nowTimeStamp + 365*24*60*60;
+        $toTimeStamp = $nowTimeStamp + 365*24*60*60;
 
         $timeZone = new \DateTimeZone('Europe/London');
         $toTime = new \DateTime('now', $timeZone);
 
         $fromTime = new \DateTime('now');
-        $fromTime->setTimestamp($fromTimeStamp);
+        $fromTime->setTimestamp($toTimeStamp);
 
         $expected = 'через 365 дней';
         $this->assertEquals(
-            $expected, $this->_object->distanceOfTimeInWords($fromTimeStamp, $nowTimeStamp, 1, $timeZone)
+            $expected, $this->_object->distanceOfTimeInWords($toTimeStamp, $nowTimeStamp, 1, $timeZone)
         );
         $this->assertEquals($expected, $this->_object->distanceOfTimeInWords($fromTime, $toTime, 1, $timeZone));
     }
