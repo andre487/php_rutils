@@ -1,11 +1,15 @@
 html {
     height: 100%;
+    overflow: auto;
 }
 
 body {
-    margin: 0 10px;
+    margin: 0 10px 30px 10px;
     font-family: 'Trebuchet MS', sans-serif;
     font-size: 14px;
+    overflow: hidden;
+    min-height: 100%;
+    height: auto;
 }
 
 h1 {
@@ -34,5 +38,5 @@ li {
 }
 
 pre, code {
-    font-family: 'Consolas', monospace;
+    font-family: 'Courier New', monospace;
 }

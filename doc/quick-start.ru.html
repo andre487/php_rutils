@@ -12,13 +12,13 @@
             Утилиты разделены на следующие модули (классы):
         </p>
         <ul>
-            <li>Numeral - работа с числами,</li>
-            <li>Dt - работа с датами,</li>
-            <li>Translit - транслитерация,</li>
-            <li>Typo - небольшой набор правил типографики простого текста.</li>
+            <li><a href="#numeral">Numeral</a> - работа с числами,</li>
+            <li><a href="#dt">Dt</a> - работа с датами,</li>
+            <li><a href="#translit">Translit</a> - транслитерация,</li>
+            <li><a href="#typo">Typo</a> - небольшой набор правил типографики простого текста.</li>
         </ul>
 
-        <h2>Возможности Numeral</h2>
+        <h2 id="numeral">Возможности Numeral</h2>
 
         <h3>Выбор формы множественного числа</h3>
 <pre>
@@ -59,7 +59,7 @@ echo RUtils::numeral()->getRubles(100.25);
 //Result: сто рублей двадцать пять копеек
 </pre>
 
-        <h2>Возможности Dt</h2>
+        <h2 id="dt">Возможности Dt</h2>
 
         <h3>Сегодняшняя дата</h3>
         <p>
@@ -124,7 +124,7 @@ echo RUtils::dt()->distanceOfTimeInWords($toTime, $fromTime, $accuracy);
 //Result: через 36 525 дней, 0 часов, 55 минут
 </pre>
 
-        <h2>Возможности Translit</h2>
+        <h2 id="translit">Возможности Translit</h2>
 <pre>
 //Транслитерация
 echo RUtils::translit()->translify('Муха — это маленькая птичка');
@@ -139,7 +139,7 @@ echo RUtils::translit()->slugify('Муха — это маленькая пти�
 //Result: muha---eto-malenkaya-ptichka
 </pre>
 
-        <h2>Возможности Typo</h2>
+        <h2 id="typo">Возможности Typo</h2>
 <pre>
 $text = &lt;&lt;&lt;TEXT
 ...Когда В. И. Пупкин увидел в газете ( это была "Сермяжная правда" № 45) рубрику Weather Forecast (r),
@@ -147,7 +147,7 @@ $text = &lt;&lt;&lt;TEXT
 TEXT;
 
 //Стандартные правила
-echo RUtils::typo()->typography($text), PHP_EOL;
+echo RUtils::typo()->typography($text);
 /**
  * Result:
  * ...Когда В. И. Пупкин увидел в газете (это была «Сермяжная правда» №45) рубрику Weather Forecast®,
@@ -156,7 +156,7 @@ echo RUtils::typo()->typography($text), PHP_EOL;
 
 
 //Правила из набора "extended"
-echo RUtils::typo()->typography($text, TypoRules::$EXTENDED_RULES), PHP_EOL;
+echo RUtils::typo()->typography($text, TypoRules::$EXTENDED_RULES);
 /**
  * Result:
  * …Когда В. И. Пупкин увидел в газете (это была «Сермяжная правда» №45) рубрику Weather Forecast®,
@@ -164,7 +164,7 @@ echo RUtils::typo()->typography($text, TypoRules::$EXTENDED_RULES), PHP_EOL;
  */
 
 //Пользовательские правила
-echo RUtils::typo()->typography($text, array(TypoRules::DASHES, TypoRules::CLEAN_SPACES)), PHP_EOL;
+echo RUtils::typo()->typography($text, array(TypoRules::DASHES, TypoRules::CLEAN_SPACES));
 /**
  * Result:
  * ...Когда В. И. Пупкин увидел в газете (это была "Сермяжная правда" № 45) рубрику Weather Forecast (r),
