@@ -222,8 +222,10 @@ class Dt
         $values[] = $days;
 
         $hours = $interval->h;
-        $words[] = $numeral->getPlural($hours, self::$_HOUR_VARIANTS);
-        $values[] = $hours;
+        if ($hours > 0) {
+        	$words[] = $numeral->getPlural($hours, self::$_HOUR_VARIANTS);
+        	$values[] = $hours;
+		}
 
         if ($days == 0 && $hours == 1 && $toCurrent)
             $alternatives[] = 'час';
