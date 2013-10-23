@@ -144,6 +144,9 @@ class DtTest extends \PHPUnit_Framework_TestCase
         $toTime = new \DateTime();
         $toTime->setTimestamp($nowTime + 365*24*60*60);
         $this->assertEquals('через 365 дней', $this->_object->distanceOfTimeInWords($toTime));
+
+        $toTime = ($nowTime + 365 * 24 * 60 * 60 + 5*60);
+        $this->assertEquals('через 365 дней, 5 минут', $this->_object->distanceOfTimeInWords($toTime, null, 3));
     }
 
     /**
