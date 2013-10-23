@@ -14,13 +14,13 @@ class Dt
     const SUFFIX_AGO = "назад"; //Month names (abbreviated, full, inflected)
 
     private static $_DAY_NAMES = array(
-        array('пн', 'понедельник', 'понедельник', "в\xa0"),
-        array('вт', 'вторник', 'вторник', "во\xa0"),
-        array('ср', 'среда', 'среду', "в\xa0"),
-        array('чт', 'четверг', 'четверг', "в\xa0"),
-        array('пт', 'пятница', 'пятницу', "в\xa0"),
-        array('сб', 'суббота', 'субботу', "в\xa0"),
-        array('вск', 'воскресенье', 'воскресенье', "в\xa0")
+        array('пн', 'понедельник', 'понедельник', "в\xC2\xA0"),
+        array('вт', 'вторник', 'вторник', "во\xC2\xA0"),
+        array('ср', 'среда', 'среду', "в\xC2\xA0"),
+        array('чт', 'четверг', 'четверг', "в\xC2\xA0"),
+        array('пт', 'пятница', 'пятницу', "в\xC2\xA0"),
+        array('сб', 'суббота', 'субботу', "в\xC2\xA0"),
+        array('вск', 'воскресенье', 'воскресенье', "в\xC2\xA0")
     ); //Day alternatives (i.e. one day ago -> yesterday)
 
     private static $_MONTH_NAMES = array(

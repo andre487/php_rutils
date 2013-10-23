@@ -61,8 +61,8 @@ class DtTest extends \PHPUnit_Framework_TestCase
     public function testRuStrFTimePreposition()
     {
         $testData = array(
-            'тест D' => "тест в\xa0пт",
-            'тест l' => "тест в\xa0пятницу",
+            'тест D' => "тест в\xC2\xA0пт",
+            'тест l' => "тест в\xC2\xA0пятницу",
         );
 
         $params = $this->_defaultParams;
