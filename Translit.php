@@ -174,7 +174,7 @@ class Translit
      */
     public function slugify($inString)
     {
-        $inString = mb_strtolower($inString);
+        $inString = mb_strtolower($inString, RUtils::$encoding);
 
         //convert & to "and"
         $inString = preg_replace('/(?:&amp;)|&/u' , ' and ', $inString);
