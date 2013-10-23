@@ -170,14 +170,15 @@ class Translit
     /**
      * Prepare string for slug (i.e. URL or file/dir name)
      * @param string $inString Input string
+     * @param string $encoding encoding text $inString
      * @return string Slug-string
      */
-    public function slugify($inString)
+    public function slugify($inString, $encoding = 'UTF-8')
     {
-        $inString = mb_strtolower($inString);
+        $inString = mb_strtolower($inString, $encoding);
 
         //convert & to "and"
-        $inString = preg_replace('/(?:&amp;)|&/u' , ' and ', $inString);
+        $inString = preg_replace('/(?:&amp;)|&/u', ' and ', $inString);
         // replace spaces by hyphen
         $inString = preg_replace('/[-\s\t]+/u', '-', $inString);
 
