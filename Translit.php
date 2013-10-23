@@ -170,11 +170,14 @@ class Translit
     /**
      * Prepare string for slug (i.e. URL or file/dir name)
      * @param string $inString Input string
+     * @param string|null $encoding
      * @return string Slug-string
      */
-    public function slugify($inString)
+    public function slugify($inString, $encoding=null)
     {
-        $inString = mb_strtolower($inString, RUtils::$encoding);
+        if ($encoding === null)
+            $encoding = RUtils::$encoding;
+        $inString = mb_strtolower($inString, $encoding);
 
         //convert & to "and"
         $inString = preg_replace('/(?:&amp;)|&/u' , ' and ', $inString);
