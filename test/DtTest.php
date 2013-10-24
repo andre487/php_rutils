@@ -193,4 +193,14 @@ class DtTest extends \PHPUnit_Framework_TestCase
             '364 дня, 3 часа, 4 минуты назад', $this->_object->distanceOfTimeInWords($pastTime, $nowTime, 3)
         );
     }
+
+    /**
+     * @covers \php_rutils\Dt::getAge
+     */
+    public function testGetAge()
+    {
+        $birthDate = time() - 86400 * 800; // 2 full years
+
+        $this->assertEquals(2, $this->_object->getAge($birthDate));
+    }
 }
