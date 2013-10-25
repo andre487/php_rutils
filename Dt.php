@@ -62,17 +62,10 @@ class Dt
         else
             $params = clone $params;
 
-        if ($params->date === null) {
+        if ($params->date === null)
             $params->date = new \DateTime();
-        }
-        elseif (is_numeric($params->date)) {
-            $timestamp = $params->date;
-            $params->date = new \DateTime();
-            $params->date->setTimestamp($timestamp);
-        }
-        elseif (is_string($params->date)) {
-            $params->date = new \DateTime($params->date);
-        }
+        else
+            $params->date = $this->_processDateTime($params->date);
 
         if (is_string($params->timezone))
             $params->timezone = new \DateTimeZone($params->timezone);
@@ -107,6 +100,32 @@ class Dt
 
         //Create date/time string
         return $params->date->format($params->format);
+    }
+
+    /**
+     * Process mixed format date
+     * @param mixed $dateTime
+     * @return \DateTime
+     * @throws \InvalidArgumentException
+     */
+    private function _processDateTime($dateTime)
+    {
+        if (is_numeric($dateTime)) {
+            $timestamp = $dateTime;
+            $dateTime = new \DateTime();
+            $dateTime->setTimestamp($timestamp);
+        }
+        elseif (empty($dateTime)) {
+            throw new \InvalidArgumentException('Date/time is empty');
+        }
+        elseif (is_string($dateTime)) {
+            $dateTime = new \DateTime($dateTime);
+        }
+
+        if (!($dateTime instanceof \DateTime)) {
+            throw new \InvalidArgumentException('Incorrect date/time type');
+        }
+        return $dateTime;
     }
 
     /**
@@ -179,27 +198,15 @@ class Dt
 
     private function _createFunctionParams($toTime, $fromTime, $timeZone)
     {
-        if (is_numeric($toTime)) {
-            $timestamp = $toTime;
-            $toTime = new \DateTime();
-            $toTime->setTimestamp($timestamp);
-        }
-        else if (is_string($toTime)) {
-            $toTime = new \DateTime($toTime);
-        }
+        $toTime = $this->_processDateTime($toTime);
 
         $toCurrent = false;
         if ($fromTime === null) {
             $fromTime = new \DateTime();
             $toCurrent = true;
         }
-        else if (is_numeric($fromTime)) {
-            $timestamp = $fromTime;
-            $fromTime = new \DateTime();
-            $fromTime->setTimestamp($timestamp);
-        }
-        else if (is_string($fromTime)) {
-            $fromTime = new \DateTime($fromTime);
+        else {
+            $fromTime = $this->_processDateTime($fromTime);
         }
 
         if (is_string($timeZone))
@@ -268,25 +275,5 @@ class Dt
         if ($interval->invert)
             throw new \InvalidArgumentException('Birth date is in future');
         return $interval->y;
-    }
-
-    private function _processDateTime($dateTime)
-    {
-        if (is_numeric($dateTime)) {
-            $timestamp = $dateTime;
-            $dateTime = new \DateTime();
-            $dateTime->setTimestamp($timestamp);
-        }
-        elseif (empty($dateTime)) {
-            throw new \InvalidArgumentException('Date/time is empty');
-        }
-        elseif (is_string($dateTime)) {
-            $dateTime = new \DateTime($dateTime);
-        }
-
-        if (!($dateTime instanceof \DateTime)) {
-            throw new \InvalidArgumentException('Incorrect date/time type');
-        }
-        return $dateTime;
     }
 }
