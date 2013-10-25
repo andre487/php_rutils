@@ -212,15 +212,12 @@ class Numeral
      * @param int|null $gender (MALE, FEMALE, NEUTER or null)
      * @return string In-words representation of numeral
      */
-    public function getInWords($amount, $gender=null)
+    public function getInWords($amount, $gender=RUtils::MALE)
     {
-        if ($amount == (int)$amount) {
-            $gender = ($gender === null) ? RUtils::MALE : $gender;
+        if ($amount == (int)$amount)
             return $this->getInWordsInt($amount, $gender);
-        }
-        else {
+        else
             return $this->getInWordsFloat($amount);
-        }
     }
 
     /**
