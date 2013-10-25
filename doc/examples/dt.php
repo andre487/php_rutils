@@ -46,4 +46,9 @@ $accuracy = 3; //days, hours, minutes
 echo RUtils::dt()->distanceOfTimeInWords($toTime, $fromTime, $accuracy), PHP_EOL;
 //Result: через 36 525 дней, 0 часов, 55 минут
 
+//Get age by date
+$birthDate = strtotime('today - 25 years');
+echo RUtils::dt()->getAge($birthDate), PHP_EOL;
+//Result: 25
+
 require '_end.php';

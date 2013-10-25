@@ -124,6 +124,13 @@ echo RUtils::dt()->distanceOfTimeInWords($toTime, $fromTime, $accuracy);
 //Result: через 36 525 дней, 0 часов, 55 минут
 </pre>
 
+        <h3>Возраст</h3>
+<pre>
+$birthDate = strtotime('today - 25 years');
+echo RUtils::dt()->getAge($birthDate);
+//Result: 25
+</pre>
+
         <h2 id="translit">Возможности Translit</h2>
 <pre>
 //Транслитерация
