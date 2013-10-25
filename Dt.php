@@ -177,31 +177,6 @@ class Dt
         return $resultStr;
     }
 
-    /**
-     * Calculates age
-     * @param string|int|\DateTime $birthDate Date of birth
-     * @throws \InvalidArgumentException
-     * @return int Full years age
-     */
-    public function getAge($birthDate)
-    {
-        if (is_numeric($birthDate)) {
-            $timestamp = $birthDate;
-            $birthDate = new \DateTime();
-            $birthDate->setTimestamp($timestamp);
-        }
-        else if (is_string($birthDate)) {
-            $birthDate = new \DateTime($birthDate);
-        }
-
-        $interval = $birthDate->diff(new \DateTime());
-
-        if ($interval->invert)
-            throw new \InvalidArgumentException('Wrong birth date');
-
-        return $interval->y;
-    }
-
     private function _createFunctionParams($toTime, $fromTime, $timeZone)
     {
         if (is_numeric($toTime)) {
@@ -278,5 +253,30 @@ class Dt
             if ($arr2)
                 array_shift($arr2);
         }
+    }
+
+    /**
+     * Calculates age
+     * @param string|int|\DateTime $birthDate Date of birth
+     * @throws \InvalidArgumentException
+     * @return int Full years age
+     */
+    public function getAge($birthDate)
+    {
+        if (is_numeric($birthDate)) {
+            $timestamp = $birthDate;
+            $birthDate = new \DateTime();
+            $birthDate->setTimestamp($timestamp);
+        }
+        else if (is_string($birthDate)) {
+            $birthDate = new \DateTime($birthDate);
+        }
+
+        $interval = $birthDate->diff(new \DateTime());
+
+        if ($interval->invert)
+            throw new \InvalidArgumentException('Wrong birth date');
+
+        return $interval->y;
     }
 }
