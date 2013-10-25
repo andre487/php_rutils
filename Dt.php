@@ -185,6 +185,9 @@ class Dt
      */
     public function getAge($birthDate)
     {
+        if (!$birthDate) {
+            throw new \InvalidArgumentException('Wrong birth date');
+        }
         if (is_numeric($birthDate)) {
             $timestamp = $birthDate;
             $birthDate = new \DateTime();

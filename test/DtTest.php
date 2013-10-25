@@ -200,4 +200,21 @@ class DtTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(2, $this->_object->getAge($birthDate));
     }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testGetDateEmpty()
+    {
+        $this->_object->getAge('');
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testGetDateFuture()
+    {
+        $birthDate = time() + 86400; // Future
+        $this->_object->getAge($birthDate);
+    }
 }
