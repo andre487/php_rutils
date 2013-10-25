@@ -38,11 +38,7 @@ class Dt
         array("дек", "декабрь", "декабря"),
     ); //Forms (1, 2, 5) for noun 'day'
 
-    private static $_DAY_ALTERNATIVES = array(
-        1 => array("вчера", "завтра"),
-        2 => array("позавчера", "послезавтра"),
-    ); //Forms (1, 2, 5) for noun 'hour'
-
+    private static $_PAST_ALTERNATIVES = array("вчера", "позавчера");
     private static $_DAY_VARIANTS = array("день", "дня", "дней"); //Forms (1, 2, 5) for noun 'minute'
     private static $_HOUR_VARIANTS = array("час", "часа", "часов"); //Prefix 'in' (i.e. B{in} three hours)
     private static $_MINUTE_VARIANTS = array("минуту", "минуты", "минут"); //Prefix 'ago' (i.e. three hours B{ago})
@@ -144,14 +140,15 @@ class Dt
 
         /* @var $toTime \DateTime */
         /* @var $fromTime \DateTime */
-        /* @var $toCurrent bool */
-        list($toTime, $fromTime, $toCurrent) = $this->_createFunctionParams($toTime, $fromTime, $timeZone);
+        /* @var $timeZone \DateTimeZone|null */
+        /* @var $fromCurrent bool */
+        list($toTime, $fromTime, $timeZone, $fromCurrent) = $this->_createFunctionParams($toTime, $fromTime, $timeZone);
         $interval = $toTime->diff($fromTime);
 
         $words = array();
         $values = array();
         $alternatives = array();
-        $this->_fillCollections($interval, $toCurrent, $words, $values, $alternatives);
+        $this->_fillCollections($interval, $fromCurrent, $words, $values, $alternatives);
         $this->_trimArrays($words);
         $this->_trimArrays($values);
 
@@ -173,16 +170,28 @@ class Dt
         }
 
         //if diff is 1 or 2 days
-        $days = $interval->d;
-        if ($toCurrent && $limit == 1 && ($days == 1 || $days == 2)) {
-            $altData = self::$_DAY_ALTERNATIVES[$days];
-            $altDay = ($interval->invert) ? $altData[1] : $altData[0];
-            return $altDay;
+        $days = $interval->days;
+        if ($fromCurrent && $limit == 1 && $days < 3) {
+            if ($interval->invert == 0 && ($days == 1 || $days == 2)) {
+                $variant = $days - 1;
+                return self::$_PAST_ALTERNATIVES[$variant];
+            }
+            elseif ($interval->invert && ($days == 0 || $days == 1)) {
+                $tomorrow = new \DateTime('today', $timeZone);
+                $tomorrow->add(new \DateInterval('P1D'));
+                $afterTomorrow = new \DateTime('today', $timeZone);
+                $afterTomorrow->add(new \DateInterval('P2D'));
+
+                if ($toTime >= $tomorrow && $toTime < $afterTomorrow)
+                    return 'завтра';
+                elseif ($days == 1 && $toTime >= $afterTomorrow)
+                    return 'послезавтра';
+            }
         }
 
         //general case
         $realStr = implode(', ', $realWords);
-        if ($limit == 1 && $toCurrent && $alternatives)
+        if ($limit == 1 && $fromCurrent && $alternatives)
             $altStr = $alternatives[0];
         else
             $altStr = '';
@@ -200,10 +209,10 @@ class Dt
     {
         $toTime = $this->_processDateTime($toTime);
 
-        $toCurrent = false;
+        $fromCurrent = false;
         if ($fromTime === null) {
             $fromTime = new \DateTime();
-            $toCurrent = true;
+            $fromCurrent = true;
         }
         else {
             $fromTime = $this->_processDateTime($fromTime);
@@ -217,7 +226,7 @@ class Dt
             $fromTime->setTimezone($timeZone);
         }
 
-        return array($toTime, $fromTime, $toCurrent);
+        return array($toTime, $fromTime, $timeZone, $fromCurrent);
     }
 
     private function _fillCollections($interval, $toCurrent, &$words, &$values, &$alternatives)

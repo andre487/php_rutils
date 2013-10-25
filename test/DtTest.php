@@ -107,6 +107,9 @@ class DtTest extends \PHPUnit_Framework_TestCase
     public function testDistanceOfTimeToCurrent()
     {
         $nowTime = strtotime('now');
+        $tomorrow = strtotime('tomorrow');
+        $afterTomorrow = strtotime('tomorrow + 24 hours');
+        $dNowTomorrow = $tomorrow - $nowTime;
 
         $testData = array(
             //past
@@ -124,15 +127,15 @@ class DtTest extends \PHPUnit_Framework_TestCase
             ($nowTime - 365*24*60*60) => '365 дней назад',
 
             //future
-            date('Y-m-d H:i:s', $nowTime + 1) => 'менее чем через минуту',
-            date('Y-m-d H:i:s', $nowTime + 60) => 'через минуту',
-            date('Y-m-d H:i:s', $nowTime + 2*60) => 'через 2 минуты',
-            date('Y-m-d H:i:s', $nowTime + 5*60) => 'через 5 минут',
-            date('Y-m-d H:i:s', $nowTime + 60*60) => 'через час',
-            date('Y-m-d H:i:s', $nowTime + 2*60*60) => 'через 2 часа',
-            date('Y-m-d H:i:s', $nowTime + 5*60*60) => 'через 5 часов',
-            date('Y-m-d H:i:s', $nowTime + 24*60*60) => 'завтра',
-            date('Y-m-d H:i:s', $nowTime + 2*24*60*60) => 'послезавтра',
+            date('Y-m-d H:i:s', $nowTime + 1) => ($dNowTomorrow >= 1 ? 'менее чем через минуту' : 'завтра'),
+            date('Y-m-d H:i:s', $nowTime + 60) => ($dNowTomorrow >= 60 ? 'через минуту' : 'завтра'),
+            date('Y-m-d H:i:s', $nowTime + 2*60) => ($dNowTomorrow >= 120 ? 'через 2 минуты' : 'завтра'),
+            date('Y-m-d H:i:s', $nowTime + 5*60) => ($dNowTomorrow >= 300 ? 'через 5 минут' : 'завтра'),
+            date('Y-m-d H:i:s', $nowTime + 60*60) => ($dNowTomorrow >= 3600 ? 'через час' : 'завтра'),
+            date('Y-m-d H:i:s', $nowTime + 2*60*60) => ($dNowTomorrow >= 7200 ? 'через 2 часа' : 'завтра'),
+            date('Y-m-d H:i:s', $nowTime + 5*60*60) => ($dNowTomorrow >= 18000 ? 'через 5 часов' : 'завтра'),
+            date('Y-m-d H:i:s', $tomorrow) => 'завтра',
+            date('Y-m-d H:i:s', $afterTomorrow) => 'послезавтра',
             date('Y-m-d H:i:s', $nowTime + 3*24*60*60) => 'через 3 дня',
             date('Y-m-d H:i:s', $nowTime + 8*24*60*60) => 'через 8 дней',
             ($nowTime + 365*24*60*60) => 'через 365 дней',
@@ -143,7 +146,7 @@ class DtTest extends \PHPUnit_Framework_TestCase
 
         $toTime = new \DateTime();
         $toTime->setTimestamp($nowTime + 365*24*60*60);
-        $this->assertEquals('через 365 дней', $this->_object->distanceOfTimeInWords($toTime));
+        $this->assertEquals('через 365 дней', $this->_object->distanceOfTimeInWords($toTime, null, 3));
 
         $toTime = ($nowTime + 365 * 24 * 60 * 60 + 5*60);
         $this->assertEquals('через 365 дней, 5 минут', $this->_object->distanceOfTimeInWords($toTime, null, 3));
@@ -192,6 +195,18 @@ class DtTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             '364 дня, 3 часа, 4 минуты назад', $this->_object->distanceOfTimeInWords($pastTime, $nowTime, 3)
         );
+    }
+
+    /**
+     * @covers \php_rutils\Dt::distanceOfTimeInWords
+     */
+    public function testDistanceOfTimeIssue11()
+    {
+        $daysAgoPattern = '/^(?<days>[\d\s]+)\sд.+?назад$/u';
+        $this->assertEquals(1, preg_match($daysAgoPattern,
+                                          RUtils::dt()->distanceOfTimeInWords(new \DateTime('23-06-1945'))));
+        $this->assertEquals(1, preg_match($daysAgoPattern,
+                                          RUtils::dt()->distanceOfTimeInWords(new \DateTime('22-06-1945'))));
     }
 
     /**
