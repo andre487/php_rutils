@@ -263,20 +263,30 @@ class Dt
      */
     public function getAge($birthDate)
     {
-        if (is_numeric($birthDate)) {
-            $timestamp = $birthDate;
-            $birthDate = new \DateTime();
-            $birthDate->setTimestamp($timestamp);
-        }
-        else if (is_string($birthDate)) {
-            $birthDate = new \DateTime($birthDate);
-        }
-
+        $birthDate = $this->_processDateTime($birthDate);
         $interval = $birthDate->diff(new \DateTime());
-
         if ($interval->invert)
-            throw new \InvalidArgumentException('Wrong birth date');
-
+            throw new \InvalidArgumentException('Birth date is in future');
         return $interval->y;
+    }
+
+    private function _processDateTime($dateTime)
+    {
+        if (is_numeric($dateTime)) {
+            $timestamp = $dateTime;
+            $dateTime = new \DateTime();
+            $dateTime->setTimestamp($timestamp);
+        }
+        elseif (empty($dateTime)) {
+            throw new \InvalidArgumentException('Date/time is empty');
+        }
+        elseif (is_string($dateTime)) {
+            $dateTime = new \DateTime($dateTime);
+        }
+
+        if (!($dateTime instanceof \DateTime)) {
+            throw new \InvalidArgumentException('Incorrect date/time type');
+        }
+        return $dateTime;
     }
 }

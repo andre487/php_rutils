@@ -197,10 +197,40 @@ class DtTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers \php_rutils\Dt::getAge
      */
-    public function testGetAge()
+    public function testGetAgeTimestamp()
     {
         $birthDate = time() - 86400 * 800; // 2 full years
 
         $this->assertEquals(2, $this->_object->getAge($birthDate));
+    }
+
+    /**
+     * @covers \php_rutils\Dt::getAge
+     */
+    public function testGetAgeEmpty()
+    {
+        $birthDate = null;
+        try {
+            $this->_object->getAge($birthDate);
+            $this->fail('Empty date passed');
+        }
+        catch (\InvalidArgumentException $e) {
+            $this->assertEquals('Date/time is empty', $e->getMessage());
+        }
+    }
+
+    /**
+     * @covers \php_rutils\Dt::getAge
+     */
+    public function testGetAgeIncorrectType()
+    {
+        $birthDate = new \DateTimeZone('UTC');
+        try {
+            $this->_object->getAge($birthDate);
+            $this->fail('Incorrect date passed');
+        }
+        catch (\InvalidArgumentException $e) {
+            $this->assertEquals('Incorrect date/time type', $e->getMessage());
+        }
     }
 }
