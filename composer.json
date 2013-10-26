@@ -1,0 +1,12 @@
+{
+    "name": "Andre_487/php_rutils",
+    "version": "1.0.0",
+    "require": {
+        "php":">=5.3.0"
+    },
+    "autoload":{
+        "psr-0":{
+            "php_rutils": ""
+        }
+    }
+}
