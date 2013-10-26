@@ -15,12 +15,6 @@ class RUtils
     const ACCURACY_HOUR = 4;
     const ACCURACY_MINUTE = 5;
 
-    /**
-     * Default encoding for multibyte strings
-     * @var string
-     */
-    public static $encoding = 'UTF-8';
-
     private static $_numeral;
     private static $_dt;
     private static $_translit;
