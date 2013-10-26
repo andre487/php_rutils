@@ -10,8 +10,8 @@ use php_rutils\struct\TimeParams;
  */
 class Dt
 {
-    const PREFIX_IN = "через"; //Day names (abbreviated, full, inflected, preposition)
-    const SUFFIX_AGO = "назад"; //Month names (abbreviated, full, inflected)
+    const PREFIX_IN = "через"; //Prefix 'in' (i.e. B{in} three hours)
+    const SUFFIX_AGO = "назад"; //Prefix 'ago' (i.e. three hours B{ago})
 
     private static $_DAY_NAMES = array(
         array('пн', 'понедельник', 'понедельник', "в\xC2\xA0"),
@@ -39,9 +39,13 @@ class Dt
     ); //Forms (1, 2, 5) for noun 'day'
 
     private static $_PAST_ALTERNATIVES = array("вчера", "позавчера");
-    private static $_DAY_VARIANTS = array("день", "дня", "дней"); //Forms (1, 2, 5) for noun 'minute'
-    private static $_HOUR_VARIANTS = array("час", "часа", "часов"); //Prefix 'in' (i.e. B{in} three hours)
-    private static $_MINUTE_VARIANTS = array("минуту", "минуты", "минут"); //Prefix 'ago' (i.e. three hours B{ago})
+    private static $_YEAR_VARIANTS = array("год", "года", "лет"); //Forms (1, 2, 5) for noun 'year'
+    private static $_MONTH_VARIANTS = array("месяц", "месяца", "месяцев");
+    private static $_DAY_VARIANTS = array("день", "дня", "дней");
+    private static $_HOUR_VARIANTS = array("час", "часа", "часов");
+    private static $_MINUTE_VARIANTS = array("минуту", "минуты", "минут");
+
+    private static $_DISTANCE_FIELDS = array('y', 'm', 'd', 'h', 'i');
 
     /**
      * Russian \DateTime::format
@@ -128,88 +132,60 @@ class Dt
      * Represents distance of time in words
      * @param string|int|\DateTime $toTime Source time
      * @param string|int|\DateTime $fromTime Target time
-     * @param int $accuracy Level of accuracy (1..3), default=1
-     * @param string|\DateTimeZone|null $timeZone Time zone
+     * @param int $accuracy Level of accuracy (year, month, day, hour, minute), default=year
      * @throws \InvalidArgumentException
+     * @throws \RuntimeException
      * @return string Distance of time in words
      */
-    public function distanceOfTimeInWords($toTime, $fromTime = null, $accuracy = 1, $timeZone = null)
-    {
-        if ($accuracy < 1 || $accuracy > 3)
-            throw new \InvalidArgumentException('Wrong accuracy value (must be 1..3)');
+    public function distanceOfTimeInWords($toTime, $fromTime=null, $accuracy=RUtils::ACCURACY_YEAR) {
+        $accuracy = (int)$accuracy;
+        if ($accuracy < 1 || $accuracy > 5)
+            throw new \InvalidArgumentException('Wrong accuracy value (must be 1..5)');
 
         /* @var $toTime \DateTime */
         /* @var $fromTime \DateTime */
-        /* @var $timeZone \DateTimeZone|null */
+        /* @var $timeZone \DateTimeZone */
         /* @var $fromCurrent bool */
-        list($toTime, $fromTime, $timeZone, $fromCurrent) = $this->_createFunctionParams($toTime, $fromTime, $timeZone);
+        list($toTime, $fromTime, $timeZone, $fromCurrent) = $this->_processFunctionParams($toTime, $fromTime);
         $interval = $toTime->diff($fromTime);
 
-        $words = array();
-        $values = array();
-        $alternatives = array();
-        $this->_fillCollections($interval, $fromCurrent, $words, $values, $alternatives);
-        $this->_trimArrays($words);
-        $this->_trimArrays($values);
-
-        $limit = min($accuracy, sizeof($words));
-        $realWords = array_slice($words, 0, $limit);
-        $realValues = array_slice($values, 0, $limit);
-
-        $length0 = sizeof($realValues);
-        $this->_trimArrays($realValues, $realWords);
-        $limit -= ($length0 - sizeof($realValues));
-
         //if diff less than one minute
-        if ($interval->i == 0 && !$realWords) {
+        if ($interval->days == 0 && $interval->h == 0 && $interval->i == 0) {
             if ($interval->invert)
-                $zeroStr = 'менее чем через минуту';
+                $result = 'менее чем через минуту';
             else
-                $zeroStr = 'менее минуты назад';
-            return $zeroStr;
+                $result = 'менее минуты назад';
+            return $result;
         }
 
-        //if diff is 1 or 2 days
-        $days = $interval->days;
-        if ($fromCurrent && $limit == 1 && $days < 3) {
-            if ($interval->invert == 0 && ($days == 1 || $days == 2)) {
-                $variant = $days - 1;
-                return self::$_PAST_ALTERNATIVES[$variant];
-            }
-            elseif ($interval->invert && ($days == 0 || $days == 1)) {
-                $tomorrow = new \DateTime('today', $timeZone);
-                $tomorrow->add(new \DateInterval('P1D'));
-                $afterTomorrow = new \DateTime('today', $timeZone);
-                $afterTomorrow->add(new \DateInterval('P2D'));
+        //create distance table
+        $distanceData = $this->_createDistanceData($interval, $fromCurrent);
+        $words = $this->_getResultWords($accuracy, $distanceData);
 
-                if ($toTime >= $tomorrow && $toTime < $afterTomorrow)
-                    return 'завтра';
-                elseif ($days == 1 && $toTime >= $afterTomorrow)
-                    return 'послезавтра';
+        //check short result
+        if ($fromCurrent && min($accuracy, sizeof($words)) == 1) {
+            //if diff expressed in one word
+            $result = $this->_getOneWordResult($interval);
+            if ($result) {
+                return $result;
+            }
+            elseif ($interval->days < 3) {
+                //if diff 1 or 2 days
+                $result = $this->_getTwoDaysResult($interval, $toTime, $timeZone);
+                if ($result)
+                    return $result;
             }
         }
 
         //general case
-        $realStr = implode(', ', $realWords);
-        if ($limit == 1 && $fromCurrent && $alternatives)
-            $altStr = $alternatives[0];
-        else
-            $altStr = '';
-
-        $resultStr = $altStr ? $altStr : $realStr;
-        if ($interval->invert)
-            $resultStr = self::PREFIX_IN.' '.$resultStr;
-        else
-            $resultStr = $resultStr.' '.self::SUFFIX_AGO;
-
-        return $resultStr;
+        $result = implode(', ', $words);
+        return $this->_addResultSuffix($interval, $result);
     }
 
-    private function _createFunctionParams($toTime, $fromTime, $timeZone)
+    private function _processFunctionParams($toTime, $fromTime)
     {
-        if (is_string($timeZone))
-            $timeZone = new \DateTimeZone($timeZone);
         $toTime = $this->_processDateTime($toTime);
+        $timeZone = $toTime->getTimezone();
 
         $fromCurrent = false;
         if ($fromTime === null) {
@@ -220,54 +196,160 @@ class Dt
             $fromTime = $this->_processDateTime($fromTime);
         }
 
-        if ($timeZone) {
-            $toTime->setTimezone($timeZone);
-            $fromTime->setTimezone($timeZone);
-        }
-
         return array($toTime, $fromTime, $timeZone, $fromCurrent);
     }
 
-    private function _fillCollections($interval, $toCurrent, &$words, &$values, &$alternatives)
+    private function _createDistanceData(\DateInterval $interval)
     {
-        $numeral = new Numeral();
+        $distanceData = array(); //table of word representations
+        $numeral = RUtils::numeral();
 
-        $days = $interval->days;
-        $words[] = $numeral->getPlural($days, self::$_DAY_VARIANTS);
-        $values[] = $days;
+        $years = $interval->y;
+        if ($years)
+            $distanceData['y'] = $numeral->getPlural($years, self::$_YEAR_VARIANTS);
+
+        $months = $interval->m;
+        if ($months)
+            $distanceData['m'] = $numeral->getPlural($months, self::$_MONTH_VARIANTS);
+
+        $days = $interval->d;
+        if ($days)
+            $distanceData['d'] = $numeral->getPlural($days, self::$_DAY_VARIANTS);
 
         $hours = $interval->h;
-        if ($hours > 0) {
-        	$words[] = $numeral->getPlural($hours, self::$_HOUR_VARIANTS);
-        	$values[] = $hours;
-		}
-
-        if ($days == 0 && $hours == 1 && $toCurrent)
-            $alternatives[] = 'час';
+        if ($hours)
+            $distanceData['h'] = $numeral->getPlural($hours, self::$_HOUR_VARIANTS);
 
         $minutes = $interval->i;
-        $words[] = $numeral->getPlural($minutes, self::$_MINUTE_VARIANTS);
-        $values[] = $minutes;
+        if ($minutes)
+            $distanceData['i'] = $numeral->getPlural($minutes, self::$_MINUTE_VARIANTS);
 
-        if ($days == 0 && $hours == 0 && $minutes == 1 && $toCurrent)
-            $alternatives[] = 'минуту';
+        return $distanceData;
     }
 
-    private function _trimArrays(array &$arr, array &$arr2=null)
+    private function _getYearResult(array $distanceData)
     {
-        $i = sizeof($arr) - 1;
-        while ($i >= 0 && $arr[$i] == 0) {
-            array_pop($arr);
-            if ($arr2)
-                array_pop($arr2);
-            --$i;
+        return $this->_getLevelResult('y', $distanceData);
+    }
+
+    private function _getMonthResult(array $distanceData)
+    {
+        list($words, $borderField) = $this->_getYearResult($distanceData);
+        return $this->_getLevelResult('m', $distanceData, $words, $borderField);
+    }
+
+    private function _getDaysResult(array $distanceData)
+    {
+        list($words, $borderField) = $this->_getMonthResult($distanceData);
+        return $this->_getLevelResult('d', $distanceData, $words, $borderField);
+    }
+
+    private function _getHoursResult(array $distanceData)
+    {
+        list($words, $borderField) = $this->_getDaysResult($distanceData);
+        return $this->_getLevelResult('h', $distanceData, $words, $borderField);
+    }
+
+    private function _getMinutesResult(array $distanceData)
+    {
+        list($words, $borderField) = $this->_getHoursResult($distanceData);
+        return $this->_getLevelResult('i', $distanceData, $words, $borderField);
+    }
+
+    private function _getLevelResult($fieldCode, array $distanceData, array $words=array(), $borderField=-1)
+    {
+        $curPos = array_search($fieldCode, self::$_DISTANCE_FIELDS);
+        if ($borderField >= $curPos)
+            return array($words, $borderField);
+
+        $nextField = $borderField + 1;
+        $length = sizeof(self::$_DISTANCE_FIELDS);
+        for ($i=$nextField; $i < $length; ++$i) {
+            $field = self::$_DISTANCE_FIELDS[$i];
+            if ($borderField != -1 && $i > $curPos) {
+                break;
+            }
+            elseif (isset($distanceData[$field])) {
+                $words[] = $distanceData[$field];
+                $borderField = $i;
+                break;
+            }
+        }
+        return array($words, $borderField);
+    }
+
+    private function _getOneWordResult(\DateInterval $interval)
+    {
+        $result = null;
+        if ($interval->days == 0 && $interval->h == 0 && $interval->i == 1)
+            $result = 'минуту';
+        elseif ($interval->days == 0 && $interval->h == 1)
+            $result = 'час';
+        elseif ($interval->y == 0 && $interval->m == 1)
+            $result = 'месяц';
+        elseif ($interval->y == 1)
+            $result = 'год';
+
+        if ($result)
+            $result = $this->_addResultSuffix($interval, $result);
+        return $result;
+    }
+
+    private function _addResultSuffix(\DateInterval $interval, $result)
+    {
+        if ($interval->invert)
+            $result = self::PREFIX_IN.' '.$result;
+        else
+            $result = $result.' '.self::SUFFIX_AGO;
+        return $result;
+    }
+
+    private function _getTwoDaysResult(\DateInterval $interval, \DateTime $toTime, \DateTimeZone $timeZone = null)
+    {
+        $result = null;
+        $days = $interval->days;
+
+        if ($interval->invert == 0 && ($days == 1 || $days == 2)) {
+            $variant = $days - 1;
+            $result = self::$_PAST_ALTERNATIVES[$variant];
+        }
+        elseif ($interval->invert && ($days == 0 || $days == 1)) {
+            $tomorrow = new \DateTime('today', $timeZone);
+            $tomorrow->add(new \DateInterval('P1D'));
+            $afterTomorrow = new \DateTime('today', $timeZone);
+            $afterTomorrow->add(new \DateInterval('P2D'));
+
+            if ($toTime >= $tomorrow && $toTime < $afterTomorrow)
+                $result = 'завтра';
+            elseif ($days == 1 && $toTime >= $afterTomorrow)
+                $result = 'послезавтра';
         }
 
-        while (sizeof($arr) && $arr[0] == 0) {
-            array_shift($arr);
-            if ($arr2)
-                array_shift($arr2);
+        return $result;
+    }
+
+    private function _getResultWords($accuracy, $distanceData)
+    {
+        switch ($accuracy) {
+            case RUtils::ACCURACY_YEAR:
+                list($words,) = $this->_getYearResult($distanceData);
+                break;
+            case RUtils::ACCURACY_MONTH:
+                list($words,) = $this->_getMonthResult($distanceData);
+                break;
+            case RUtils::ACCURACY_DAY:
+                list($words,) = $this->_getDaysResult($distanceData);
+                break;
+            case RUtils::ACCURACY_HOUR:
+                list($words,) = $this->_getHoursResult($distanceData);
+                break;
+            case RUtils::ACCURACY_MINUTE:
+                list($words,) = $this->_getMinutesResult($distanceData);
+                break;
+            default:
+                throw new \RuntimeException("Unexpected accuracy level: $accuracy");
         }
+        return $words;
     }
 
     /**

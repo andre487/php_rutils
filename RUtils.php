@@ -3,9 +3,17 @@ namespace php_rutils;
 
 class RUtils
 {
-    const MALE = 1; //sex - male
-    const FEMALE = 2; //sex - female
-    const NEUTER = 3; //sex - neuter
+    //gender constants
+    const MALE = 1;
+    const FEMALE = 2;
+    const NEUTER = 3;
+
+    //accuracy for Dt::distanceOfTimeInWords function
+    const ACCURACY_YEAR = 1;
+    const ACCURACY_MONTH = 2;
+    const ACCURACY_DAY = 3;
+    const ACCURACY_HOUR = 4;
+    const ACCURACY_MINUTE = 5;
 
     /**
      * Default encoding for multibyte strings
