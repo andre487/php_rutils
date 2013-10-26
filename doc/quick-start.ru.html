@@ -103,15 +103,15 @@ echo RUtils::dt()->ruStrFTime($params);
         <p>Параметр <code>$accuracy</code> отвечает за подробность информации.</p>
 
 <pre>
-$toTime = new \DateTime('05-06-1945');
-echo RUtils::dt()->distanceOfTimeInWords($toTime);
-//Result: 24 976 дней назад
+$toTime = new \DateTime('05-06-1945'); //Unix timestamp and string also available
+echo RUtils::dt()->distanceOfTimeInWords($toTime), PHP_EOL;
+//Result: 68 лет назад
 
 $toTime = strtotime('05-06-1945');
 $fromTime = null; //now
-$accuracy = 3; //дни, часы, минуты
-echo RUtils::dt()->distanceOfTimeInWords($toTime, $fromTime, $accuracy);
-//Result: 24 976 дней, 11 часов, 21 минуту назад
+$accuracy = RUtils::ACCURACY_MINUTE; //years, months, days, hours, minutes
+echo RUtils::dt()->distanceOfTimeInWords($toTime, $fromTime, $accuracy), PHP_EOL;
+//Result: 68 лет, 4 месяца, 21 день, 19 часов, 12 минут назад
 </pre>
 
 
@@ -119,9 +119,9 @@ echo RUtils::dt()->distanceOfTimeInWords($toTime, $fromTime, $accuracy);
 <pre>
 $fromTime = '1988-01-01 11:40';
 $toTime = '2088-01-01 12:35';
-$accuracy = 3; //дни, часы, минуты
-echo RUtils::dt()->distanceOfTimeInWords($toTime, $fromTime, $accuracy);
-//Result: через 36 525 дней, 0 часов, 55 минут
+$accuracy = RUtils::ACCURACY_MINUTE; //years, months, days, hours, minutes
+echo RUtils::dt()->distanceOfTimeInWords($toTime, $fromTime, $accuracy), PHP_EOL;
+//Result: через 100 лет, 55 минут
 </pre>
 
         <h3>Возраст</h3>
@@ -134,16 +134,16 @@ echo RUtils::dt()->getAge($birthDate);
         <h2 id="translit">Возможности Translit</h2>
 <pre>
 //Транслитерация
-echo RUtils::translit()->translify('Муха — это маленькая птичка');
-//Result: Muha - eto malen'kaya ptichka
+echo RUtils::translit()->translify('Муха - это маленькая птичка');
+//Result: Muxa - e`to malen`kaya ptichka
 
 //Обратное преобразование
-echo RUtils::translit()->detranslify("SCHuka");
-//Result: Щука
+echo RUtils::translit()->detranslify("Muxa - e`to malen`kaya ptichka");
+//Result: Муха - это маленькая птичка
 
 //Подготовка для использования в URL'ях или путях
 echo RUtils::translit()->slugify('Муха — это маленькая птичка');
-//Result: muha---eto-malenkaya-ptichka
+//Result: muha-eto-malenkaya-ptichka
 </pre>
 
         <h2 id="typo">Возможности Typo</h2>

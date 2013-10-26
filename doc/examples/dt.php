@@ -30,21 +30,21 @@ echo RUtils::dt()->ruStrFTime($params), PHP_EOL;
 //Time distance from now to fixed date in past
 $toTime = new \DateTime('05-06-1945'); //Unix timestamp and string also available
 echo RUtils::dt()->distanceOfTimeInWords($toTime), PHP_EOL;
-//Result: 24 976 дней назад
+//Result: 68 лет назад
 
 $toTime = strtotime('05-06-1945');
 $fromTime = null; //now
-$accuracy = 3; //days, hours, minutes
+$accuracy = RUtils::ACCURACY_MINUTE; //years, months, days, hours, minutes
 echo RUtils::dt()->distanceOfTimeInWords($toTime, $fromTime, $accuracy), PHP_EOL;
-//Result: 24 976 дней, 11 часов, 21 минуту назад
+//Result: 68 лет, 4 месяца, 21 день, 19 часов, 12 минут назад
 
 
 //Time distance from fixed date in past to date in future
 $fromTime = '1988-01-01 11:40';
 $toTime = '2088-01-01 12:35';
-$accuracy = 3; //days, hours, minutes
+$accuracy = RUtils::ACCURACY_MINUTE; //years, months, days, hours, minutes
 echo RUtils::dt()->distanceOfTimeInWords($toTime, $fromTime, $accuracy), PHP_EOL;
-//Result: через 36 525 дней, 0 часов, 55 минут
+//Result: через 100 лет, 55 минут
 
 //Get age by date
 $birthDate = strtotime('today - 25 years');
