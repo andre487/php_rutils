@@ -3,10 +3,9 @@
     "description": "RUtils is a Russian-specific string utils (transliteration, numeral is words, russian dates, typography)",
     "version": "1.0.1",
     "type": "library",
-    "keywords": "transliteration, numeral is words, russian dates, typography, транслитерация, числительные словами, русские даты, типографика",
+    "keywords": ["transliteration", "numeral is words", "russian dates", "typography", "транслитерация", "числительные словами", "русские даты", "типографика"],
     "homepage": "https://github.com/Andre-487/php_rutils",
     "license": "MIT",
-    "authors": "Andre and all GitHub people",
     "require": {
         "php":">=5.3.0"
     },
