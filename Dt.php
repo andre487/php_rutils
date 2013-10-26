@@ -207,19 +207,18 @@ class Dt
 
     private function _createFunctionParams($toTime, $fromTime, $timeZone)
     {
+        if (is_string($timeZone))
+            $timeZone = new \DateTimeZone($timeZone);
         $toTime = $this->_processDateTime($toTime);
 
         $fromCurrent = false;
         if ($fromTime === null) {
-            $fromTime = new \DateTime();
+            $fromTime = new \DateTime('now', $timeZone);
             $fromCurrent = true;
         }
         else {
             $fromTime = $this->_processDateTime($fromTime);
         }
-
-        if (is_string($timeZone))
-            $timeZone = new \DateTimeZone($timeZone);
 
         if ($timeZone) {
             $toTime->setTimezone($timeZone);
