@@ -10,8 +10,8 @@ use php_rutils\struct\TimeParams;
  */
 class Dt
 {
-    const PREFIX_IN = "через"; //Prefix 'in' (i.e. B{in} three hours)
-    const SUFFIX_AGO = "назад"; //Prefix 'ago' (i.e. three hours B{ago})
+    public static $PREFIX_IN = "через"; //Prefix 'in' (i.e. B{in} three hours)
+    public static $SUFFIX_AGO = "назад"; //Prefix 'ago' (i.e. three hours B{ago})
 
     private static $_DAY_NAMES = array(
         array('пн', 'понедельник', 'понедельник', "в\xC2\xA0"),
@@ -298,9 +298,9 @@ class Dt
     private function _addResultSuffix(\DateInterval $interval, $result)
     {
         if ($interval->invert)
-            $result = self::PREFIX_IN.' '.$result;
+            $result = self::$PREFIX_IN.' '.$result;
         else
-            $result = $result.' '.self::SUFFIX_AGO;
+            $result = $result.' '.self::$SUFFIX_AGO;
         return $result;
     }
 
