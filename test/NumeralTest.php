@@ -64,8 +64,8 @@ class NumeralTest extends \PHPUnit_Framework_TestCase
             -1 => '-1 гвоздь',
             2 => '2 гвоздя',
             11 => '11 гвоздей',
-            1104 => '1 104 гвоздя',
-            1111 => '1 111 гвоздей',
+            1104 => "1\xE2\x80\x89104 гвоздя",
+            1111 => "1\xE2\x80\x89111 гвоздей",
         );
         foreach ($testData as $amount => $expected)
             $this->_assertGetPlural($amount, $expected);
