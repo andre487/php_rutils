@@ -1,5 +1,5 @@
 {
-    "name": "Andre_487/php_rutils",
+    "name": "andre_487/php_rutils",
     "version": "1.0.0",
     "require": {
         "php":">=5.3.0"
