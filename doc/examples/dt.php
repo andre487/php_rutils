@@ -1,6 +1,7 @@
 <?php
 namespace php_rutils\doc\examples;
 
+use php_rutils\Dt;
 use php_rutils\RUtils;
 use php_rutils\struct\TimeParams;
 
@@ -46,9 +47,20 @@ $accuracy = RUtils::ACCURACY_MINUTE; //years, months, days, hours, minutes
 echo RUtils::dt()->distanceOfTimeInWords($toTime, $fromTime, $accuracy), PHP_EOL;
 //Result: через 100 лет, 55 минут
 
+
 //Get age by date
 $birthDate = strtotime('today - 25 years');
 echo RUtils::dt()->getAge($birthDate), PHP_EOL;
 //Result: 25
+
+
+//Custom prefix in
+Dt::$PREFIX_IN = 'опосля';
+$fromTime = '1988-01-01 11:40';
+$toTime = '2088-01-01 12:35';
+$accuracy = RUtils::ACCURACY_MINUTE; //years, months, days, hours, minutes
+echo RUtils::dt()->distanceOfTimeInWords($toTime, $fromTime, $accuracy), PHP_EOL;
+//Result: опосля 100 лет, 55 минут
+
 
 require '_end.php';
