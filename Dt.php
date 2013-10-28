@@ -295,13 +295,15 @@ class Dt
         return $result;
     }
 
+    /**
+     * Add suffix or Postfix to string.
+     * @param \DateInterval $interval
+     * @param $result string
+     * @return string modified $result.
+     */
     private function _addResultSuffix(\DateInterval $interval, $result)
     {
-        if ($interval->invert)
-            $result = self::$PREFIX_IN.' '.$result;
-        else
-            $result = $result.' '.self::$SUFFIX_AGO;
-        return $result;
+        return $interval->invert ? self::$PREFIX_IN . "\xC2\xA0" . $result : $result . "\xC2\xA0" . self::$SUFFIX_AGO;
     }
 
     private function _getTwoDaysResult(\DateInterval $interval, \DateTime $toTime, \DateTimeZone $timeZone = null)
