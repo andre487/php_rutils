@@ -198,9 +198,7 @@ class Numeral
         $words[] = $endWord;
 
         $words[] = $prevResult;
-        $words = array_filter($words, function($val) {
-                return (strlen($val) > 0);
-            });
+        $words = array_filter($words, 'strlen');
 
         $result = trim(implode(' ', $words));
         return array($result, $tmpVal);
