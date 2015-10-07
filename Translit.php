@@ -111,7 +111,7 @@ class Translit
         $inString = preg_replace('/(?:&amp;)|&/u' , ' and ', $inString);
 
         //replace spaces
-        $inString = preg_replace('/[—−-\s\t]+/u', '-', $inString);
+        $inString = preg_replace('/[—−\-\s\t]+/u', '-', $inString);
 
         $translitString = strtolower($this->translify($inString));
         return preg_replace('/[^a-z0-9_-]+/i', '', $translitString);
