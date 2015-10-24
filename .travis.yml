@@ -1,0 +1,7 @@
+language: php
+php:
+  - 5.3
+  - 5.6
+
+before_script: composer install --dev
+script: ./vendor/bin/phpunit --config test/phpunit.xml
