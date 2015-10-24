@@ -33,6 +33,13 @@ class TypoRules
     public static $STANDARD_RULES = array(self::QUOTES, self::MARKS, self::DASHES, self::CLEAN_SPACES);
 
     //Standard rules: quotes, marks, word glue, dashes, initials, ellipsis, clean spaces
-    public static $EXTENDED_RULES = array(self::DASHES, self::QUOTES, self::MARKS, self::ELLIPSIS,
-                                          self::CLEAN_SPACES, self::INITIALS, self::WORD_GLUE,);
+    public static $EXTENDED_RULES = array(
+        self::DASHES,
+        self::QUOTES,
+        self::MARKS,
+        self::ELLIPSIS,
+        self::CLEAN_SPACES,
+        self::INITIALS,
+        self::WORD_GLUE,
+    );
 }

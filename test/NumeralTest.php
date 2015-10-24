@@ -46,8 +46,9 @@ class NumeralTest extends \PHPUnit_Framework_TestCase
             104 => 'гвоздя',
             111 => 'гвоздей',
         );
-        foreach ($testData as $amount => $expected)
+        foreach ($testData as $amount => $expected) {
             $this->_assertChoosePlural($amount, $expected);
+        }
     }
 
     private function _assertChoosePlural($amount, $expected)
@@ -67,8 +68,9 @@ class NumeralTest extends \PHPUnit_Framework_TestCase
             1104 => "1\xE2\x80\x89104 гвоздя",
             1111 => "1\xE2\x80\x89111 гвоздей",
         );
-        foreach ($testData as $amount => $expected)
+        foreach ($testData as $amount => $expected) {
             $this->_assertGetPlural($amount, $expected);
+        }
     }
 
     private function _assertGetPlural($amount, $expected)
@@ -104,8 +106,9 @@ class NumeralTest extends \PHPUnit_Framework_TestCase
             1102003 => 'один миллион сто две тысячи три гвоздя',
             1100000001 => 'один миллиард сто миллионов один гвоздь',
         );
-        foreach ($testData as $amount => $expected)
+        foreach ($testData as $amount => $expected) {
             $this->assertEquals($expected, $this->_object->sumString($amount, RUtils::MALE, $variants));
+        }
     }
 
     /**
@@ -127,8 +130,9 @@ class NumeralTest extends \PHPUnit_Framework_TestCase
             1102003 => 'один миллион сто две тысячи три шляпки',
             1100000001 => 'один миллиард сто миллионов одна шляпка',
         );
-        foreach ($testData as $amount => $expected)
+        foreach ($testData as $amount => $expected) {
             $this->assertEquals($expected, $this->_object->sumString($amount, RUtils::FEMALE, $variants));
+        }
     }
 
     /**
@@ -138,10 +142,9 @@ class NumeralTest extends \PHPUnit_Framework_TestCase
     {
         $variants = array('гвоздь', 'гвоздя', 'гвоздей');
         try {
-            var_dump($this->_object->sumString(PHP_INT_MAX+1, RUtils::MALE, $variants));
+            $this->_object->sumString(PHP_INT_MAX + 1, RUtils::MALE, $variants);
             $this->fail('No RangeException');
-        }
-        catch (\RangeException $e) {
+        } catch (\RangeException $e) {
         }
     }
 
@@ -168,8 +171,9 @@ class NumeralTest extends \PHPUnit_Framework_TestCase
             '0.1' => 'ноль целых одна десятая',
             '0.000000001' => 'ноль целых одна миллиардная',
         );
-        foreach ($testData as $amount => $expected)
+        foreach ($testData as $amount => $expected) {
             $this->assertEquals($expected, $this->_object->getInWordsFloat($amount));
+        }
 
     }
 
@@ -188,8 +192,9 @@ class NumeralTest extends \PHPUnit_Framework_TestCase
             '0.1' => 'ноль целых одна десятая',
             '0.000000001' => 'ноль целых одна миллиардная',
         );
-        foreach ($testData as $amount => $expected)
+        foreach ($testData as $amount => $expected) {
             $this->assertEquals($expected, $this->_object->getInWords($amount, RUtils::FEMALE));
+        }
     }
 
     /**
@@ -204,7 +209,8 @@ class NumeralTest extends \PHPUnit_Framework_TestCase
             '2.25' => 'два рубля двадцать пять копеек',
             '0.01' => 'одна копейка',
         );
-        foreach ($testData as $amount => $expected)
+        foreach ($testData as $amount => $expected) {
             $this->assertEquals($expected, $this->_object->getRubles($amount));
+        }
     }
 }

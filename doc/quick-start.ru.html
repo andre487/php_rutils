@@ -7,9 +7,10 @@
     </head>
     <body>
         <h1>Quick start</h1>
+
         <p>
             <b>PHP RUtils</b>&nbsp;&mdash; порт <a href="https://github.com/j2a/pytils">Pytils</a> на PHP.
-            Утилиты разделены на следующие модули (классы):
+                             Утилиты разделены на следующие модули (классы):
         </p>
         <ul>
             <li><a href="#numeral">Numeral</a> - работа с числами,</li>
@@ -62,6 +63,7 @@ echo RUtils::numeral()->getRubles(100.25);
         <h2 id="dt">Возможности Dt</h2>
 
         <h3>Сегодняшняя дата</h3>
+
         <p>
             Параметры передаются в качестве инстанса класса
             <code>\php_rutils\struct\TimeParams</code>,
@@ -78,10 +80,12 @@ echo RUtils::dt()->ruStrFTime($params);
 
 
         <h3>Историческая дата</h3>
+
         <p>
             Параметры передаются в качестве массива,
             поля такие же как в классе <code>TimeParams</code>.
         </p>
+
         <p>
             Дата передается как строка в свободном формате. Так же возможно передавать дату
             как Unix timestamp или как инстанс класса <code>\DateTime</code>.
@@ -99,7 +103,9 @@ echo RUtils::dt()->ruStrFTime($params);
 
 
         <h3>Временной период до фиксированной даты в прошлом</h3>
+
         <p>Форматы времени для данной функции аналогичны форматам для <code>ruStrFTime</code>.</p>
+
         <p>Параметр <code>$accuracy</code> отвечает за подробность информации.</p>
 
 <pre>

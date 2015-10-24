@@ -24,7 +24,9 @@ class Typo
         //remove double spaces
         array('#[ ]+#um', ' '),
     );
-    private static $_CLEAN_SPACES_PATTERN, $_CLEAN_SPACES_REPLACEMENT;
+
+    private static $_CLEAN_SPACES_PATTERN;
+    private static $_CLEAN_SPACES_REPLACEMENT;
 
     //ELLIPSIS RULE
     private static $_ELLIPSIS_PATTERN = array(
@@ -79,7 +81,9 @@ class Typo
         array('#(\w)\s+(®|™)#u', '$1$2'),
         array('#\s(no|№)\s*(\d+)#ui', "\xC2\xA0№\xE2\x80\x89$2"),
     );
-    private static $_MARKS_PATTERN, $_MARKS_REPLACEMENT;
+
+    private static $_MARKS_PATTERN;
+    private static $_MARKS_REPLACEMENT;
 
     //QUOTES RULE
     private static $_QUOTES_PATTERN = array(
@@ -93,7 +97,7 @@ class Typo
     /**
      * "Constructor" for class variables
      */
-    public static function StaticConstructor()
+    public static function staticConstructor()
     {
         self::$_CLEAN_SPACES_PATTERN = array();
         self::$_CLEAN_SPACES_REPLACEMENT = array();
@@ -194,12 +198,14 @@ class Typo
      * @return string
      * @throws \InvalidArgumentException
      */
-    public function typography($text, array $rules=null)
+    public function typography($text, array $rules = null)
     {
-        if ($rules === null)
+        if ($rules === null) {
             $rules = TypoRules::$STANDARD_RULES;
-        if (array_diff($rules, TypoRules::$EXTENDED_RULES))
+        }
+        if (array_diff($rules, TypoRules::$EXTENDED_RULES)) {
             throw new \InvalidArgumentException('Invalid typo rules');
+        }
 
         foreach ($rules as $rule) {
             $funcName = 'rl'.$rule;
@@ -209,4 +215,4 @@ class Typo
     }
 }
 
-Typo::StaticConstructor();
+Typo::staticConstructor();
