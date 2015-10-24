@@ -1,26 +1,26 @@
 {
-    "name": "andre_487/php_rutils",
-    "description": "RUtils is a Russian-specific string utils (transliteration, numeral is words, russian dates, typography)",
-    "version": "1.1.1",
-    "type": "library",
-    "keywords": ["transliteration", "numeral is words", "russian dates", "typography"],
-    "homepage": "https://github.com/Andre-487/php_rutils",
-    "license": "MIT",
-    "repositories": [
-        {
-            "type": "git",
-            "url": "https://github.com/Andre-487/php_rutils"
-        }
-    ],
-    "require": {
-        "php":">=5.3.0"
-    },
-    "require-dev": {
-        "phpunit/phpunit": "~5.0"
-    },
-    "autoload":{
-        "psr-0":{
-            "php_rutils": ".."
-        }
+  "name": "andre_487/php_rutils",
+  "description": "RUtils is a Russian-specific string utils (transliteration, numeral is words, russian dates, typography)",
+  "version": "1.1.1",
+  "type": "library",
+  "keywords": ["transliteration", "numeral is words", "russian dates", "typography"],
+  "homepage": "https://github.com/Andre-487/php_rutils",
+  "license": "MIT",
+  "repositories": [
+    {
+      "type": "git",
+      "url": "https://github.com/Andre-487/php_rutils"
     }
+  ],
+  "require": {
+    "php": ">=5.3.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "~5.0"
+  },
+  "autoload": {
+    "psr-0": {
+      "php_rutils": ".."
+    }
+  }
 }
