@@ -1,6 +1,13 @@
 PHP RUtils
 ----------
 
+[![License](https://poser.pugx.org/andre_487/php_rutils/license)](https://packagist.org/packages/andre_487/php_rutils)
+[![Latest Stable Version](https://poser.pugx.org/andre_487/php_rutils/v/stable)](https://packagist.org/packages/andre_487/php_rutils)
+
+[![Daily Downloads](https://poser.pugx.org/andre_487/php_rutils/d/daily)](https://packagist.org/packages/andre_487/php_rutils)
+[![Monthly Downloads](https://poser.pugx.org/andre_487/php_rutils/d/monthly)](https://packagist.org/packages/andre_487/php_rutils)
+[![Total Downloads](https://poser.pugx.org/andre_487/php_rutils/downloads)](https://packagist.org/packages/andre_487/php_rutils)
+
 [![Build Status](https://travis-ci.org/Andre-487/php_rutils.svg)](https://travis-ci.org/Andre-487/php_rutils)
 [![Code Climate](https://codeclimate.com/github/Andre-487/php_rutils/badges/gpa.svg)](https://codeclimate.com/github/Andre-487/php_rutils)
 
