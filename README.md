@@ -1,10 +1,13 @@
 PHP RUtils
 ----------
 
-RUtils is a Russian-specific string utils (transliteration, numeral is words, russian dates, typography) for PHP. 
+[![Build Status](https://travis-ci.org/Andre-487/php_rutils.svg)](https://travis-ci.org/Andre-487/php_rutils)
+[![Code Climate](https://codeclimate.com/github/Andre-487/php_rutils/badges/gpa.svg)](https://codeclimate.com/github/Andre-487/php_rutils)
+
+RUtils is a Russian-specific string utils (transliteration, numeral is words, russian dates, typography) for PHP.
 This is a port of the Python [Pytils](https://github.com/j2a/pytils) to PHP.
 
-See additional docs and examples in [doc subdir](https://github.com/Andre-487/php_rutils/tree/master/doc). 
+See additional docs and examples in [doc subdir](https://github.com/Andre-487/php_rutils/tree/master/doc).
 
 Library is published on the Composer: https://packagist.org/packages/andre_487/php_rutils
 
@@ -21,6 +24,10 @@ RUtils — порт утилит [Pytils](https://github.com/j2a/pytils) на PH
 ----------
 
 Буду рад принять помощь по проекту в виде советов, баг-репортов и pull-реквестов.
+
+Проект следует стилю кодирования [PSR-2](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md).
+Стиль проверяется с помощью [PHP_CodeSniffer](https://github.com/squizlabs/PHP_CodeSniffer)
+на этапе CI.
 
 Хочу сказать большое спасибо [всем людям](https://github.com/Andre-487/php_rutils/graphs/contributors),
 внесшим свой вклад в улучшение проекта.

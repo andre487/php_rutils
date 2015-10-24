@@ -55,22 +55,26 @@ class Dt
     public function ruStrFTime($params = null)
     {
         //Params handle
-        if ($params === null)
+        if ($params === null) {
             $params = new TimeParams();
-        elseif (is_array($params))
+        } elseif (is_array($params)) {
             $params = TimeParams::create($params);
-        else
+        } else {
             $params = clone $params;
+        }
 
-        if ($params->date === null)
+        if ($params->date === null) {
             $params->date = new \DateTime();
-        else
+        } else {
             $params->date = $this->_processDateTime($params->date);
+        }
 
-        if (is_string($params->timezone))
+        if (is_string($params->timezone)) {
             $params->timezone = new \DateTimeZone($params->timezone);
-        if ($params->timezone)
+        }
+        if ($params->timezone) {
             $params->date->setTimezone($params->timezone);
+        }
 
         //Format processing
         $weekday = $params->date->format('N') - 1;
@@ -114,11 +118,9 @@ class Dt
             $timestamp = $dateTime;
             $dateTime = new \DateTime();
             $dateTime->setTimestamp($timestamp);
-        }
-        elseif (empty($dateTime)) {
+        } elseif (empty($dateTime)) {
             throw new \InvalidArgumentException('Date/time is empty');
-        }
-        elseif (is_string($dateTime)) {
+        } elseif (is_string($dateTime)) {
             $dateTime = new \DateTime($dateTime);
         }
 
@@ -137,10 +139,12 @@ class Dt
      * @throws \RuntimeException
      * @return string Distance of time in words
      */
-    public function distanceOfTimeInWords($toTime, $fromTime=null, $accuracy=RUtils::ACCURACY_YEAR) {
+    public function distanceOfTimeInWords($toTime, $fromTime = null, $accuracy = RUtils::ACCURACY_YEAR)
+    {
         $accuracy = (int)$accuracy;
-        if ($accuracy < 1 || $accuracy > 5)
+        if ($accuracy < 1 || $accuracy > 5) {
             throw new \InvalidArgumentException('Wrong accuracy value (must be 1..5)');
+        }
 
         /* @var $toTime \DateTime */
         /* @var $fromTime \DateTime */
@@ -151,15 +155,16 @@ class Dt
 
         //if diff less than one minute
         if ($interval->days == 0 && $interval->h == 0 && $interval->i == 0) {
-            if ($interval->invert)
+            if ($interval->invert) {
                 $result = 'менее чем через минуту';
-            else
+            } else {
                 $result = 'менее минуты назад';
+            }
             return $result;
         }
 
         //create distance table
-        $distanceData = $this->_createDistanceData($interval, $fromCurrent);
+        $distanceData = $this->_createDistanceData($interval);
         $words = $this->_getResultWords($accuracy, $distanceData);
 
         //check short result
@@ -168,12 +173,12 @@ class Dt
             $result = $this->_getOneWordResult($interval);
             if ($result) {
                 return $result;
-            }
-            elseif ($interval->days < 3) {
+            } elseif ($interval->days < 3) {
                 //if diff 1 or 2 days
                 $result = $this->_getTwoDaysResult($interval, $toTime, $timeZone);
-                if ($result)
+                if ($result) {
                     return $result;
+                }
             }
         }
 
@@ -191,8 +196,7 @@ class Dt
         if ($fromTime === null) {
             $fromTime = new \DateTime('now', $timeZone);
             $fromCurrent = true;
-        }
-        else {
+        } else {
             $fromTime = $this->_processDateTime($fromTime);
         }
 
@@ -205,24 +209,29 @@ class Dt
         $numeral = RUtils::numeral();
 
         $years = $interval->y;
-        if ($years)
+        if ($years) {
             $distanceData['y'] = $numeral->getPlural($years, self::$_YEAR_VARIANTS);
+        }
 
         $months = $interval->m;
-        if ($months)
+        if ($months) {
             $distanceData['m'] = $numeral->getPlural($months, self::$_MONTH_VARIANTS);
+        }
 
         $days = $interval->d;
-        if ($days)
+        if ($days) {
             $distanceData['d'] = $numeral->getPlural($days, self::$_DAY_VARIANTS);
+        }
 
         $hours = $interval->h;
-        if ($hours)
+        if ($hours) {
             $distanceData['h'] = $numeral->getPlural($hours, self::$_HOUR_VARIANTS);
+        }
 
         $minutes = $interval->i;
-        if ($minutes)
+        if ($minutes) {
             $distanceData['i'] = $numeral->getPlural($minutes, self::$_MINUTE_VARIANTS);
+        }
 
         return $distanceData;
     }
@@ -256,20 +265,20 @@ class Dt
         return $this->_getLevelResult('i', $distanceData, $words, $borderField);
     }
 
-    private function _getLevelResult($fieldCode, array $distanceData, array $words=array(), $borderField=-1)
+    private function _getLevelResult($fieldCode, array $distanceData, array $words = array(), $borderField = -1)
     {
         $curPos = array_search($fieldCode, self::$_DISTANCE_FIELDS);
-        if ($borderField >= $curPos)
+        if ($borderField >= $curPos) {
             return array($words, $borderField);
+        }
 
         $nextField = $borderField + 1;
         $length = sizeof(self::$_DISTANCE_FIELDS);
-        for ($i=$nextField; $i < $length; ++$i) {
+        for ($i = $nextField; $i < $length; ++$i) {
             $field = self::$_DISTANCE_FIELDS[$i];
             if ($borderField != -1 && $i > $curPos) {
                 break;
-            }
-            elseif (isset($distanceData[$field])) {
+            } elseif (isset($distanceData[$field])) {
                 $words[] = $distanceData[$field];
                 $borderField = $i;
                 break;
@@ -281,17 +290,19 @@ class Dt
     private function _getOneWordResult(\DateInterval $interval)
     {
         $result = null;
-        if ($interval->days == 0 && $interval->h == 0 && $interval->i == 1)
+        if ($interval->days == 0 && $interval->h == 0 && $interval->i == 1) {
             $result = 'минуту';
-        elseif ($interval->days == 0 && $interval->h == 1)
+        } elseif ($interval->days == 0 && $interval->h == 1) {
             $result = 'час';
-        elseif ($interval->y == 0 && $interval->m == 1)
+        } elseif ($interval->y == 0 && $interval->m == 1) {
             $result = 'месяц';
-        elseif ($interval->y == 1)
+        } elseif ($interval->y == 1) {
             $result = 'год';
+        }
 
-        if ($result)
+        if ($result) {
             $result = $this->_addResultSuffix($interval, $result);
+        }
         return $result;
     }
 
@@ -303,7 +314,7 @@ class Dt
      */
     private function _addResultSuffix(\DateInterval $interval, $result)
     {
-        return $interval->invert ? self::$PREFIX_IN . "\xC2\xA0" . $result : $result . "\xC2\xA0" . self::$SUFFIX_AGO;
+        return $interval->invert ? self::$PREFIX_IN."\xC2\xA0".$result : $result."\xC2\xA0".self::$SUFFIX_AGO;
     }
 
     private function _getTwoDaysResult(\DateInterval $interval, \DateTime $toTime, \DateTimeZone $timeZone = null)
@@ -314,17 +325,17 @@ class Dt
         if ($interval->invert == 0 && ($days == 1 || $days == 2)) {
             $variant = $days - 1;
             $result = self::$_PAST_ALTERNATIVES[$variant];
-        }
-        elseif ($interval->invert && ($days == 0 || $days == 1)) {
+        } elseif ($interval->invert && ($days == 0 || $days == 1)) {
             $tomorrow = new \DateTime('today', $timeZone);
             $tomorrow->add(new \DateInterval('P1D'));
             $afterTomorrow = new \DateTime('today', $timeZone);
             $afterTomorrow->add(new \DateInterval('P2D'));
 
-            if ($toTime >= $tomorrow && $toTime < $afterTomorrow)
+            if ($toTime >= $tomorrow && $toTime < $afterTomorrow) {
                 $result = 'завтра';
-            elseif ($days == 1 && $toTime >= $afterTomorrow)
+            } elseif ($days == 1 && $toTime >= $afterTomorrow) {
                 $result = 'послезавтра';
+            }
         }
 
         return $result;
@@ -364,8 +375,9 @@ class Dt
     {
         $birthDate = $this->_processDateTime($birthDate);
         $interval = $birthDate->diff(new \DateTime());
-        if ($interval->invert)
+        if ($interval->invert) {
             throw new \InvalidArgumentException('Birth date is in future');
+        }
         return $interval->y;
     }
 }

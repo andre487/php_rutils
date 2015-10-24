@@ -51,14 +51,16 @@ class TimeParams
      * @param array|null $aParams
      * @return TimeParams
      */
-    public static function create(array $aParams=null)
+    public static function create(array $aParams = null)
     {
         $params = new self();
-        if ($aParams === null)
+        if ($aParams === null) {
             return $params;
+        }
 
-        foreach ($aParams as $name => $value)
+        foreach ($aParams as $name => $value) {
             $params->$name = $value;
+        }
 
         return $params;
     }

@@ -2,7 +2,7 @@
 <phpunit bootstrap="bootstrap.php">
     <testsuites>
         <testsuite name="RUTils">
-            <directory>../</directory>
+            <directory>.</directory>
         </testsuite>
     </testsuites>
 </phpunit>

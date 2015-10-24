@@ -26,8 +26,9 @@ class RUtils
      */
     public static function numeral()
     {
-        if (self::$_numeral === null)
+        if (self::$_numeral === null) {
             self::$_numeral = new Numeral();
+        }
         return self::$_numeral;
     }
 
@@ -37,8 +38,9 @@ class RUtils
      */
     public static function dt()
     {
-        if (self::$_dt === null)
+        if (self::$_dt === null) {
             self::$_dt = new Dt();
+        }
         return self::$_dt;
     }
 
@@ -48,8 +50,9 @@ class RUtils
      */
     public static function translit()
     {
-        if (self::$_translit === null)
+        if (self::$_translit === null) {
             self::$_translit = new Translit();
+        }
         return self::$_translit;
     }
 
@@ -59,8 +62,9 @@ class RUtils
      */
     public static function typo()
     {
-        if (self::$_typo === null)
+        if (self::$_typo === null) {
             self::$_typo = new Typo();
+        }
         return self::$_typo;
     }
 
@@ -70,7 +74,7 @@ class RUtils
      * @param int $decimals
      * @return string
      */
-    public static function formatNumber($number, $decimals=0)
+    public static function formatNumber($number, $decimals = 0)
     {
         $number = number_format($number, $decimals, ',', ' ');
         return str_replace(' ', "\xE2\x80\x89", $number);

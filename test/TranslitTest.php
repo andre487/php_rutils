@@ -31,8 +31,9 @@ class TranslitTest extends \PHPUnit_Framework_TestCase
             '‘Или вот так’' => "'Ili vot tak'",
             'Двигатель “Pratt&Whitney”' => 'Dvigatel` "Pratt&Whitney"'
         );
-        foreach ($testData as $testValue => $expected)
+        foreach ($testData as $testValue => $expected) {
             $this->assertEquals($expected, $this->_object->translify($testValue));
+        }
     }
 
     /**
@@ -49,8 +50,9 @@ class TranslitTest extends \PHPUnit_Framework_TestCase
             '"Vot tak vot"' => '«Вот так вот»',
             "'Ili vot tak'" => '‘Или вот так’',
         );
-        foreach ($testData as $testValue => $expected)
+        foreach ($testData as $testValue => $expected) {
             $this->assertEquals($expected, $this->_object->detranslify($testValue));
+        }
     }
 
     /**
@@ -71,8 +73,9 @@ class TranslitTest extends \PHPUnit_Framework_TestCase
             '95−34' => '95-34',
             'Эмгыр вар Эмрейс тоже хочет быть в slugify' => 'emgyr-var-emrejs-tozhe-xochet-byt-v-slugify',
         );
-        foreach ($testData as $testValue => $expected)
+        foreach ($testData as $testValue => $expected) {
             $this->assertEquals($expected, $this->_object->slugify($testValue));
+        }
     }
 
     /**

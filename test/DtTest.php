@@ -120,8 +120,7 @@ class DtTest extends \PHPUnit_Framework_TestCase
         try {
             $this->_object->getAge($birthDate);
             $this->fail('Empty date passed');
-        }
-        catch (\InvalidArgumentException $e) {
+        } catch (\InvalidArgumentException $e) {
             $this->assertEquals('Date/time is empty', $e->getMessage());
         }
     }
@@ -135,8 +134,7 @@ class DtTest extends \PHPUnit_Framework_TestCase
         try {
             $this->_object->getAge($birthDate);
             $this->fail('Incorrect date passed');
-        }
-        catch (\InvalidArgumentException $e) {
+        } catch (\InvalidArgumentException $e) {
             $this->assertEquals('Incorrect date/time type', $e->getMessage());
         }
     }
