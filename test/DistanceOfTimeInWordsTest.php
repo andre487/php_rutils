@@ -249,7 +249,7 @@ class DistanceOfTimeInWordsTest extends \PHPUnit_Framework_TestCase
         $toTime->add(new \DateInterval('P11Y3M12DT4H2M'));
 
         $this->assertEquals(
-            "через\xC2\xA067 лет, 3 месяца, 12 дней, 4 часа, 2 минуты",
+            "через\xC2\xA067 лет, 3 месяца, 14 дней, 4 часа, 2 минуты",
             $this->_object->distanceOfTimeInWords($toTime, $fromTime, RUtils::ACCURACY_MINUTE)
         );
     }
