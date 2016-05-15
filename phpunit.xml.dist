@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit
+        colors="true"
+        processIsolation="false"
+        stopOnFailure="false"
+        syntaxCheck="false"
+        bootstrap="./vendor/autoload.php"
+        >
+    <php>
+        <ini name="memory_limit" value="-1"/>
+        <ini name="apc.enable_cli" value="1"/>
+        <ini name="default_charset" value="utf-8"/>
+    </php>
+
+    <!-- Add any additional test suites you want to run here -->
+    <testsuites>
+        <testsuite name="Lib Test Suite">
+            <directory>./test/</directory>
+        </testsuite>
+        <!-- Add plugin test suites here. -->
+    </testsuites>
+
+</phpunit>
