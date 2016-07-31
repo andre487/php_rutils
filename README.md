@@ -1,6 +1,14 @@
 PHP RUtils
 ----------
 
+## Требуются контрибьютеры и мейнтейнеры
+
+Я до сих пор люблю этот проект, но заниматься им не хватает времени и сил. Да и активной разработкой на PHP я не занимаюсь вот уже два года.
+
+Если вы используете PHP Rutils и хотите помочь проекту – пишите мне на почту andrey.prokopyuk@gmail.com
+
+## Summary
+
 [![License](https://poser.pugx.org/andre_487/php_rutils/license)](https://packagist.org/packages/andre_487/php_rutils)
 [![Latest Stable Version](https://poser.pugx.org/andre_487/php_rutils/v/stable)](https://packagist.org/packages/andre_487/php_rutils)
 
