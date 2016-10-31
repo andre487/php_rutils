@@ -19,8 +19,8 @@ class Translit
         array("№", "#"),
         //Alphabet (ISO9 [ГОСТ 7.79—2000], Scheme B)
         //3-symbolic
-        array('Щ', 'Shh'),
-        array('щ', 'shh'),
+        array('Щ', 'Sch'),
+        array('щ', 'sch'),
         //2-symbolic
         array('Ё', 'Yo'),
         array('ё', 'yo'),
