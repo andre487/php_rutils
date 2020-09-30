@@ -1,4 +1,4 @@
-PHP RUtils
+PHP RUtils - Add English Support
 ----------
 
 ## Требуются контрибьютеры и мейнтейнеры
